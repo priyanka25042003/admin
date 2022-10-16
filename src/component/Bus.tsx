@@ -1,6 +1,6 @@
 function Bus() {
     return(
-        <div><h1>Welcome</h1></div>
+        <div><h1>bus</h1></div>
     )
  }
 
