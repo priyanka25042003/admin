@@ -6,7 +6,6 @@ import Hotel from "../component/Hotel";
 import Navbar from "./Navbar";
 import "./sidebar.css";
 
-
 function Sidebar(porps: any) {
   console.log("props", porps.show);
 

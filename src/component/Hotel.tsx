@@ -7,14 +7,21 @@ function Hotel() {
 
   const [tableGgl, settableGgl]: any = useState(false);
   function setData(event: any) {
+    console.log(event.target.name);
+    
     const name = event.target.name;
     const value = event.target.value;
     setdata({ ...data, [name]: value });
+    console.log({ ...data, [name]: value });
+    
   }
 
   function submit() {
     console.log(data);
-    if (!data.key) {
+    
+    if (!data.key && data.key == null) {
+      console.log("runn");
+      
       firebase
         .database()
         .ref("/hotel")
@@ -28,6 +35,8 @@ function Hotel() {
           console.log(err);
         });
     } else {
+      console.log("fdasd");
+
       firebase
         .database()
         .ref("/hotel/" + data.key)
@@ -60,16 +69,29 @@ function Hotel() {
         console.log(err);
       });
   }
+  function startSHow(star: any) {
+    console.log("adfasdfasdf",star);
+    
+    switch (star) {
+      case "5":
+        return "⭐⭐⭐⭐⭐";
+      case "4":
+        return "⭐⭐⭐⭐";
+      case "3":
+        return "⭐⭐⭐";
+      case "2":
+        return "⭐⭐";
+      case "1":
+        return "⭐";
+    };
+  }
   function edit(data: any) {
     console.log(data);
     settableGgl(true);
     setdata(data);
+
   }
-  function update(data: any) {
-    console.log(data);
-    settableGgl(true);
-    setdata(data);
-  }
+ 
   function remove(id: any) {
     console.log(id);
     firebase
@@ -124,18 +146,64 @@ function Hotel() {
                 id="inputEmail4"
               />
             </div>
+            <div className="col-md-12">
+              <h3>Address</h3>
+            </div>
             <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                Address
+                Street Address
               </label>
               <input
                 onChange={(e) => setData(e)}
-                name="hotel_address"
-                value={data.hotel_address}
+                name="street_address"
+                value={data.street_address}
                 type="text"
                 className="form-control"
                 id="inputPassword4"
               />
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="inputPassword4" className="form-label">
+                City
+              </label>
+              <input
+                onChange={(e) => setData(e)}
+                name="city"
+                value={data.city}
+                type="text"
+                className="form-control"
+                id="inputPassword4"
+              />
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="inputPassword4" className="form-label">
+                State
+              </label>
+              <input
+                onChange={(e) => setData(e)}
+                name="state"
+                value={data.state}
+                type="text"
+                className="form-control"
+                id="inputPassword4"
+              />
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="inputPassword4" className="form-label">
+                ZIP code
+              </label>
+              <input
+                onChange={(e) => setData(e)}
+                name="zip"
+                value={data.zip}
+                type="text"
+                className="form-control"
+                id="inputPassword4"
+              />
+            </div>
+            <hr />
+            <div className="col-md-12 m-2">
+              <h3>ROOS INFO</h3>
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress" className="form-label">
@@ -148,7 +216,6 @@ function Hotel() {
                 type="text"
                 className="form-control"
                 id="inputAddress"
-                placeholder="1234 Main St"
               />
             </div>
             <div className="col-md-6">
@@ -162,37 +229,96 @@ function Hotel() {
                 type="number"
                 className="form-control"
                 id="inputAddress2"
-                placeholder="Apartment, studio, or floor"
               />
             </div>
+
             <div className="col-md-6">
-              <label htmlFor="inputCity" className="form-label"></label>
+              <label htmlFor="inputState" className="form-label">
+                Hotel Type
+              </label>
+              <select
+                id="inputState"
+                className="form-control"
+                onChange={(e) => setData(e)}
+                name="hotel_type"
+                value={data.hotel_type}
+              >
+                <option selected>Choose...</option>
+                <option value={"5"}>⭐⭐⭐⭐⭐</option>
+                <option value={"4"}>⭐⭐⭐⭐</option>
+                <option value={"3"}>⭐⭐⭐</option>
+                <option value={"2"}>⭐⭐</option>
+                <option value={"1"}>⭐</option>
+              </select>
+            </div>
+            <hr />
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                Avilabe Rooms
+              </label>
               <input
                 onChange={(e) => setData(e)}
-                value={data.hotel_type}
-                name="hotel_type"
+                value={data.avilabe_rooms}
+                name="avilabe_rooms"
+                type="text"
+                className="form-control"
+                id="inputCity"
+              />
+            </div>
+
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                WIFI
+              </label>
+              <input
+                onChange={(e) => setData(e)}
+                value={data.wifi}
+                name="wifi"
+                type="text"
+                className="form-control"
+                id="inputCity"
+              />
+            </div>
+            <div className="col-md-6 mt-1">
+              <label htmlFor="inputCity" className="form-label">
+                A/C
+              </label>
+              <input
+                onChange={(e) => setData(e)}
+                value={data.ac}
+                name="ac"
+                type="text"
+                className="form-control"
+                id="inputCity"
+              />
+            </div>
+            <div className="col-md-6 mt-1">
+              <label htmlFor="inputCity" className="form-label">
+                Singal Bad Prise
+              </label>
+              <input
+                onChange={(e) => setData(e)}
+                value={data.Singledelux_room}
+                name="Singledelux_room"
                 type="text"
                 className="form-control"
                 id="inputCity"
               />
             </div>
             <div className="col-md-6">
-              <label htmlFor="inputState" className="form-label">
-                Hotel Type
+              <label htmlFor="inputCity" className="form-label">
+                double Bad Prise
               </label>
-              <select id="inputState" className="form-select form-control" >
-                <option selected>Choose...</option>
-                <option value={"5"} >⭐⭐⭐⭐⭐</option>
-                <option value={"4"} >⭐⭐⭐⭐</option>
-                <option value={"3"} >⭐⭐⭐</option>
-                <option value={"2"} >⭐⭐</option>
-                <option value={"1"} >⭐</option>
-              </select>
+              <input
+                onChange={(e) => setData(e)}
+                value={data.doubledelux_room}
+                name="doubledelux_room"
+                type="text"
+                className="form-control"
+                id="inputCity"
+              />
             </div>
 
-            <div>
-              <hr />
-            </div>
             <div className="col-12 mt-4 text-center ">
               <label
                 htmlFor="exampleFormControlTextarea1"
@@ -227,24 +353,26 @@ function Hotel() {
             <thead>
               <tr>
                 <th scope="col">NAME</th>
-                <th scope="col">FROM</th>
-                <th scope="col">TO</th>
-                <th scope="col">ARRIVAL DATE</th>
-                <th scope="col">DEPARTURE TIME</th>
-                <th scope="col">DESTINATION</th>
-                <th scope="col">ACTIONS</th>
+                <th scope="col">CITY</th>
+                <th scope="col">STATE</th>
+                <th scope="col">HOTAL TYPE DATE</th>
+                <th scope="col">AVAILABLE ROOMS</th>
+                <th scope="col">TOTAL ROOMS</th>
               </tr>
             </thead>
             <tbody>
               {table.map((data: any) => {
+                let typr = startSHow(data.hotel_type);
+                console.log("DSsfa", typr);
+
                 return (
                   <tr>
-                    <th> {data.Hotel_name} </th>
-                    <td> {data.from_location} </td>
-                    <td> {data.to_location} </td>
-                    <td> {data.arrival_date} </td>
-                    <td> {data.departure_time} </td>
-                    <td> {data.destination} </td>
+                    <th> {data.hotel_name} </th>
+                    <td> {data.city} </td>
+                    <td> {data.state} </td>
+                    <td> {typr} </td>
+                    <td> {data.avilabe_rooms} </td>
+                    <td> {data.total_rooms} </td>
                     <td>
                       <button
                         className="btn btn-success btn-circle btn-circle-sm m-1"

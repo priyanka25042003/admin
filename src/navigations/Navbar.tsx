@@ -33,7 +33,7 @@ function Navbar() {
         // </nav> */}
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <a className="navbar-brand" href="#">
-            TRAVELO
+            Logo
           </a>
          
           <button className="d-block d-md-none" onClick={showsidebar} type="button">
