@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import firebase from "firebase";
+import Table from "../shared/table/table";
 
 function Flight() {
   const [data, setdata]: any = useState();
@@ -11,6 +12,11 @@ function Flight() {
     const value = event.target.value;
     setdata({ ...data, [name]: value });
   }
+
+  let col:any[]=[{"NAME":"flight_name"},{"FROM":"from_location"},{"TO":"to_location"},{"ARRIVAL DATE":"arrival_date"},{"DEPARTURE TIME":"departure_time"},{"DESTINATION":"destination"},{"ACTIONS":""}]
+
+
+
 
   function submit() {
     console.log(data);
@@ -294,7 +300,7 @@ function Flight() {
         </div>
       ) : (
         <div className=" table-responsive">
-          <table className="table table-striped">
+          {/* <table className="table table-striped">
             <thead>
               <tr>
                 <th scope="col">NAME</th>
@@ -336,7 +342,8 @@ function Flight() {
                 );
               })}
             </tbody>
-          </table>
+          </table> */}
+          <Table  datasoure={table} coll={col}></Table>
         </div>
       )}
     </div>

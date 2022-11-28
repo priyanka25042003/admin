@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import firebase from "firebase";
+import Table from "../shared/table/table";
 
 function Hotel() {
   const [data, setdata]: any = useState();
@@ -15,6 +16,7 @@ function Hotel() {
     console.log({ ...data, [name]: value });
     
   }
+  let col = [{"NAME":"hotel_name"},{"CITY":"city"},{"STATE":"state"},{"HOTAL TYPE":"hotel_type"},{"AVAILABLE ROOMS":"avilabe_rooms"},{"TOTAL ROOMS":"total_rooms"},{"ACTION":''}]
 
   function submit() {
     console.log(data);
@@ -244,11 +246,11 @@ function Hotel() {
                 value={data.hotel_type}
               >
                 <option selected>Choose...</option>
-                <option value={"5"}>⭐⭐⭐⭐⭐</option>
-                <option value={"4"}>⭐⭐⭐⭐</option>
-                <option value={"3"}>⭐⭐⭐</option>
-                <option value={"2"}>⭐⭐</option>
-                <option value={"1"}>⭐</option>
+                <option value={"⭐⭐⭐⭐⭐"}>⭐⭐⭐⭐⭐</option>
+                <option value={"⭐⭐⭐⭐"}>⭐⭐⭐⭐</option>
+                <option value={"⭐⭐⭐"}>⭐⭐⭐</option>
+                <option value={"⭐⭐"}>⭐⭐</option>
+                <option value={"⭐"}>⭐</option>
               </select>
             </div>
             <hr />
@@ -349,7 +351,7 @@ function Hotel() {
         </div>
       ) : (
         <div className=" table-responsive">
-          <table className="table table-striped">
+          {/* <table className="table table-striped">
             <thead>
               <tr>
                 <th scope="col">NAME</th>
@@ -362,7 +364,7 @@ function Hotel() {
             </thead>
             <tbody>
               {table.map((data: any) => {
-                let typr = startSHow(data.hotel_type);
+                // let typr = startSHow(data.hotel_type);
                 console.log("DSsfa", typr);
 
                 return (
@@ -393,7 +395,8 @@ function Hotel() {
                 );
               })}
             </tbody>
-          </table>
+          </table> */}
+          <Table datasoure={table} coll={col}></Table>
         </div>
       )}
     </div>
