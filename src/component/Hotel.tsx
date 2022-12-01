@@ -114,6 +114,17 @@ function Hotel() {
     setdata({});
     settableGgl(tableGgl ? false : true);
   }
+  function sendData(method:any,keys:any,datas:any) {
+    console.log(method,keys,datas);
+    if (method == "edit") {
+      edit(datas)
+    }{
+      console.log("#######3",datas);
+      
+      remove(datas.key)
+    }
+    
+  }
 
   return (
     <div className="container">
@@ -396,7 +407,7 @@ function Hotel() {
               })}
             </tbody>
           </table> */}
-          <Table datasoure={table} coll={col}></Table>
+          <Table sendDataa={(met:any,data:any,key:any) => sendData(met,data,key)} datasoure={table} coll={col}></Table>
         </div>
       )}
     </div>

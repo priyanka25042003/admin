@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter, BrowserRouter as Router, Link, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, BrowserRouter as Router, Link, Route, Routes, useNavigate} from 'react-router-dom';
 import Home from './component/Home';
 import Flight from './component/Flight';
 import Hotel from './component/Hotel';
@@ -10,7 +10,9 @@ import Sidebar from './navigations/Sidebar';
 import Bus from './component/Bus';
 import Login from "./auth/login";
 
-function App() {
+export default function App() {
+  
+  
   return (
     <>
       <BrowserRouter>
@@ -28,4 +30,4 @@ function App() {
   );
 }
 
-export default App;
+// export default App;

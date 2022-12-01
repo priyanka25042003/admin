@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function Table(props: any) {
+  
   console.log(props);
 
   return (
@@ -19,6 +20,7 @@ export default function Table(props: any) {
           {props.datasoure.map((maindata: any) => {
             let keys: any = Object.keys(maindata);
             console.log(keys);
+            
             // let typr = startSHow(data.hotel_type);
             // console.log("DSsfa", typr);
 
@@ -35,14 +37,14 @@ export default function Table(props: any) {
                   <button
                     className="btn btn-success btn-circle btn-circle-sm m-1"
                     style={{ borderRadius: "50% " }}
-                    // onClick={() => edit(data)}
+                    onClick={() => props.sendDataa("edit",keys,maindata)}
                   >
                     <i className="fa fa-pencil" aria-hidden="true"></i>
                   </button>
                   <button
                     className="btn btn-danger btn-circle btn-circle-sm m-1"
                     style={{ borderRadius: "50% " }}
-                    // onClick={() => remove(data.key)}
+                    onClick={() => props.sendDataa("remove",keys,maindata)}
                   >
                     <i className="fa fa-trash" aria-hidden="true"></i>
                   </button>

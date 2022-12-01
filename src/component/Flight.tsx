@@ -15,7 +15,17 @@ function Flight() {
 
   let col:any[]=[{"NAME":"flight_name"},{"FROM":"from_location"},{"TO":"to_location"},{"ARRIVAL DATE":"arrival_date"},{"DEPARTURE TIME":"departure_time"},{"DESTINATION":"destination"},{"ACTIONS":""}]
 
-
+  function sendData(method:any,keys:any,datas:any) {
+    console.log(method,keys,datas);
+    if (method == "edit") {
+      edit(datas)
+    }{
+      console.log("#######3",datas);
+      
+      remove(datas.key)
+    }
+    
+  }
 
 
   function submit() {
@@ -343,7 +353,7 @@ function Flight() {
               })}
             </tbody>
           </table> */}
-          <Table  datasoure={table} coll={col}></Table>
+          <Table sendDataa={(met:any,data:any,key:any) => sendData(met,data,key)} datasoure={table} coll={col}></Table>
         </div>
       )}
     </div>

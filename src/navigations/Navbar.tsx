@@ -1,11 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 
 function Navbar() {
  
-
+  useEffect(() => {
+    navig()
+  }, [])
+  const navigate = useNavigate();
+  function navig() {
+    let auth = localStorage.getItem("admindata")
+    if (!auth) {
+      navigate('/login')
+    }
+  }
   const [show, setshow] = useState(true);
 
   function showsidebar() {
