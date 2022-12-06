@@ -1,55 +1,73 @@
 import { useEffect, useState } from "react";
 import firebase from "firebase";
 import Table from "../shared/table/table";
+import axios from "axios";
+import stat from "../assets/state.json";
 
 function Hotel() {
   const [data, setdata]: any = useState();
   const [table, settable]: any = useState([]);
+  const [state, setsate]: any[] = useState([]);
+  const [city, setcitys]: any = useState([]);
+
 
   const [tableGgl, settableGgl]: any = useState(false);
+  useEffect(() => {
+    getdata();
+    // setState();
+    setsate(Object.keys(stat));
+    console.log(stat);
+  }, []);
   function setData(event: any) {
-    console.log(event.target.name);
-    
+    //console.log(event.target.name);
+
     const name = event.target.name;
     const value = event.target.value;
     setdata({ ...data, [name]: value });
-    console.log({ ...data, [name]: value });
-    
+    //console.log({ ...data, [name]: value });
   }
-  let col = [{"NAME":"hotel_name"},{"CITY":"city"},{"STATE":"state"},{"HOTAL TYPE":"hotel_type"},{"AVAILABLE ROOMS":"avilabe_rooms"},{"TOTAL ROOMS":"total_rooms"},{"ACTION":''}]
+  let col = [
+    { NAME: "hotel_name" },
+    { CITY: "city" },
+    { STATE: "state" },
+    { "HOTAL TYPE": "hotel_type" },
+    { "AVAILABLE ROOMS": "avilabe_rooms" },
+    { "TOTAL ROOMS": "total_rooms" },
+    { ACTION: "" },
+  ];
 
   function submit() {
-    console.log(data);
-    
+    //console.log(data);
+
     if (!data.key && data.key == null) {
-      console.log("runn");
-      
+      //console.log("runn");
+
       firebase
         .database()
         .ref("/hotel")
         .push(data)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           settableGgl(false);
           getdata();
         })
         .catch((err) => {
-          console.log(err);
+          //console.log(err);
         });
     } else {
-      console.log("fdasd");
+      //console.log("fdasd");
 
       firebase
         .database()
         .ref("/hotel/" + data.key)
         .update(data)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           settableGgl(false);
           getdata();
         })
         .catch((err) => {
-          console.log(err);
+          //console.log(err);
         });
     }
   }
@@ -61,19 +79,27 @@ function Hotel() {
       .get()
       .then((res) => {
         res.forEach((element) => {
-          // console.log( element.forEach(c => ()));
+          // //console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
-          console.log(arr);
+          //console.log(arr);
         });
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
       });
   }
-  function startSHow(star: any) {
-    console.log("adfasdfasdf",star);
+  function setcity(e:any) {
+    let state:any = stat
+    let city = state[e.target.value]
     
+    setcitys(city)
+    console.log(city);
+    
+  } 
+  function startSHow(star: any) {
+    //console.log("adfasdfasdf", star);
+
     switch (star) {
       case "5":
         return "⭐⭐⭐⭐⭐";
@@ -85,17 +111,16 @@ function Hotel() {
         return "⭐⭐";
       case "1":
         return "⭐";
-    };
+    }
   }
   function edit(data: any) {
-    console.log(data);
+    //console.log(data);
     settableGgl(true);
     setdata(data);
-
   }
- 
+
   function remove(id: any) {
-    console.log(id);
+    //console.log(id);
     firebase
       .database()
       .ref("/hotel/" + id)
@@ -106,24 +131,21 @@ function Hotel() {
       .catch(() => {});
   }
 
-  useEffect(() => {
-    getdata();
-  }, []);
-
   function toggle() {
     setdata({});
     settableGgl(tableGgl ? false : true);
   }
-  function sendData(method:any,keys:any,datas:any) {
-    console.log(method,keys,datas);
+  function setCity() {}
+  function sendData(method: any, keys: any, datas: any) {
+    //console.log(method, keys, datas);
     if (method == "edit") {
-      edit(datas)
-    }{
-      console.log("#######3",datas);
-      
-      remove(datas.key)
+      edit(datas);
     }
-    
+    {
+      //console.log("#######3", datas);
+
+      remove(datas.key);
+    }
   }
 
   return (
@@ -177,30 +199,42 @@ function Hotel() {
             </div>
             <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                City
+                State
               </label>
-              <input
-                onChange={(e) => setData(e)}
-                name="city"
+              <select
+                aria-label="Default select example"
+                onChange={(e) => setcity(e)}
+                name="state"
                 value={data.city}
-                type="text"
                 className="form-control"
                 id="inputPassword4"
-              />
+              >
+                <option selected>Options...</option>
+                {state.map((data: any) => {
+                  return <option value={data}>{data}</option>;
+                })}
+              </select>
             </div>
             <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                State
+                City
               </label>
-              <input
+              <select
+                aria-label="Default select example"
                 onChange={(e) => setData(e)}
-                name="state"
-                value={data.state}
-                type="text"
+                name="city"
+                value={data.city}
                 className="form-control"
                 id="inputPassword4"
-              />
+              >
+                <option selected>Options...</option>
+                {city.map((data: any) => {
+                  return <option value={data}>{data}</option>;
+                })}
+              </select>
+              
             </div>
+            
             <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 ZIP code
@@ -376,7 +410,7 @@ function Hotel() {
             <tbody>
               {table.map((data: any) => {
                 // let typr = startSHow(data.hotel_type);
-                console.log("DSsfa", typr);
+                //console.log("DSsfa", typr);
 
                 return (
                   <tr>
@@ -407,7 +441,13 @@ function Hotel() {
               })}
             </tbody>
           </table> */}
-          <Table sendDataa={(met:any,data:any,key:any) => sendData(met,data,key)} datasoure={table} coll={col}></Table>
+          <Table
+            sendDataa={(met: any, data: any, key: any) =>
+              sendData(met, data, key)
+            }
+            datasoure={table}
+            coll={col}
+          ></Table>
         </div>
       )}
     </div>
