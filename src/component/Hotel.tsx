@@ -149,9 +149,10 @@ function Hotel() {
   }
 
   return (
-    <div className="container">
+    <div className="container-fluid">
+      
       <button
-        className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
+        className={tableGgl ? "btn-danger btn" : "btn-success btn "}
         onClick={toggle}
       >
         {tableGgl ? (
@@ -395,54 +396,8 @@ function Hotel() {
           </div>
         </div>
       ) : (
-        <div className=" table-responsive">
-          {/* <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">NAME</th>
-                <th scope="col">CITY</th>
-                <th scope="col">STATE</th>
-                <th scope="col">HOTAL TYPE DATE</th>
-                <th scope="col">AVAILABLE ROOMS</th>
-                <th scope="col">TOTAL ROOMS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {table.map((data: any) => {
-                // let typr = startSHow(data.hotel_type);
-                //console.log("DSsfa", typr);
-
-                return (
-                  <tr>
-                    <th> {data.hotel_name} </th>
-                    <td> {data.city} </td>
-                    <td> {data.state} </td>
-                    <td> {typr} </td>
-                    <td> {data.avilabe_rooms} </td>
-                    <td> {data.total_rooms} </td>
-                    <td>
-                      <button
-                        className="btn btn-success btn-circle btn-circle-sm m-1"
-                        style={{ borderRadius: "50% " }}
-                        onClick={() => edit(data)}
-                      >
-                        <i className="fa fa-pencil" aria-hidden="true"></i>
-                      </button>
-                      <button
-                        className="btn btn-danger btn-circle btn-circle-sm m-1"
-                        style={{ borderRadius: "50% " }}
-                        onClick={() => remove(data.key)}
-                      >
-                        <i className="fa fa-trash" aria-hidden="true"></i>
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table> */}
-          <Table
-            sendDataa={(met: any, data: any, key: any) =>
+        <div>
+           <Table sendDataa={(met: any, data: any, key: any) =>
               sendData(met, data, key)
             }
             datasoure={table}
