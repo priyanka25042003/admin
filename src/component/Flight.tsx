@@ -19,7 +19,7 @@ function Flight() {
     console.log(method,keys,datas);
     if (method == "edit") {
       edit(datas)
-    }{
+    }else{
       console.log("#######3",datas);
       
       remove(datas.key)
@@ -353,7 +353,12 @@ function Flight() {
               })}
             </tbody>
           </table> */}
-          <Table sendDataa={(met:any,data:any,key:any) => sendData(met,data,key)} datasoure={table} coll={col}></Table>
+           { 
+           
+           table.length ? 
+            <Table sendDataa={(met:any,data:any,key:any) => sendData(met,data,key)} datasoure={table} coll={col}></Table>
+            :""
+          }
         </div>
       )}
     </div>

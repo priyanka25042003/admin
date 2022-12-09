@@ -6,7 +6,7 @@ import stat from "../assets/state.json";
 
 function Hotel() {
   const [data, setdata]: any = useState();
-  const [table, settable]: any = useState([]);
+  const [table, settable]: any[] = useState([]);
   const [state, setsate]: any[] = useState([]);
   const [city, setcitys]: any = useState([]);
 
@@ -73,6 +73,7 @@ function Hotel() {
   }
   function getdata() {
     let arr: any[] = [];
+
     firebase
       .database()
       .ref("/hotel")
@@ -82,6 +83,8 @@ function Hotel() {
           // //console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
+          console.log(arr);
+          
           //console.log(arr);
         });
       })
@@ -140,7 +143,7 @@ function Hotel() {
     //console.log(method, keys, datas);
     if (method == "edit") {
       edit(datas);
-    }
+    }else
     {
       //console.log("#######3", datas);
 
@@ -397,12 +400,15 @@ function Hotel() {
         </div>
       ) : (
         <div>
-           <Table sendDataa={(met: any, data: any, key: any) =>
+          
+           { 
+           
+           table.length ? <Table sendDataa={(met: any, data: any, key: any) =>
               sendData(met, data, key)
             }
             datasoure={table}
             coll={col}
-          ></Table>
+          ></Table>:""}
         </div>
       )}
     </div>

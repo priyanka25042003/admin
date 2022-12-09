@@ -2,11 +2,18 @@ import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 
 export default function Table(props: any) {
-  const [data, setdata] = useState(props);
-
-  // useEffect(() => {
-  //   setdata(props.datasoure)
-  // })
+  const [data, setdata]:any = useState(props);
+  // console.log(props.datasoure);
+  
+  useEffect(() => {
+    if (props) {
+      
+      if (props.datasoure.lenth !== null) {
+        setdata(props)
+        console.log(data);
+      }
+    }
+  },[])
 
   function search(params: any) {
     for (let i = 0; i < data.datasoure.length; i++) {
