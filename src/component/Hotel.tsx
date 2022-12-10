@@ -10,21 +10,20 @@ function Hotel() {
   const [state, setsate]: any[] = useState([]);
   const [city, setcitys]: any = useState([]);
 
-
   const [tableGgl, settableGgl]: any = useState(false);
   useEffect(() => {
     getdata();
     // setState();
     setsate(Object.keys(stat));
-    console.log(stat);
+    //console.log(stat);
   }, []);
   function setData(event: any) {
-    //console.log(event.target.name);
+    ////console.log(event.target.name);
 
     const name = event.target.name;
     const value = event.target.value;
     setdata({ ...data, [name]: value });
-    //console.log({ ...data, [name]: value });
+    ////console.log({ ...data, [name]: value });
   }
   let col = [
     { NAME: "hotel_name" },
@@ -37,37 +36,37 @@ function Hotel() {
   ];
 
   function submit() {
-    //console.log(data);
+    ////console.log(data);
 
     if (!data.key && data.key == null) {
-      //console.log("runn");
+      ////console.log("runn");
 
       firebase
         .database()
         .ref("/hotel")
         .push(data)
         .then((res) => {
-          //console.log(res);
+          ////console.log(res);
           settableGgl(false);
           getdata();
         })
         .catch((err) => {
-          //console.log(err);
+          ////console.log(err);
         });
     } else {
-      //console.log("fdasd");
+      ////console.log("fdasd");
 
       firebase
         .database()
         .ref("/hotel/" + data.key)
         .update(data)
         .then((res) => {
-          //console.log(res);
+          ////console.log(res);
           settableGgl(false);
           getdata();
         })
         .catch((err) => {
-          //console.log(err);
+          ////console.log(err);
         });
     }
   }
@@ -80,28 +79,27 @@ function Hotel() {
       .get()
       .then((res) => {
         res.forEach((element) => {
-          // //console.log( element.forEach(c => ()));
+          // ////console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
-          console.log(arr);
-          
           //console.log(arr);
+
+          ////console.log(arr);
         });
       })
       .catch((err) => {
-        //console.log(err);
+        ////console.log(err);
       });
   }
-  function setcity(e:any) {
-    let state:any = stat
-    let city = state[e.target.value]
-    
-    setcitys(city)
-    console.log(city);
-    
-  } 
+  function setcity(e: any) {
+    let state: any = stat;
+    let city = state[e.target.value];
+    setcitys(city);
+    //console.log(city);
+    setData(e);
+  }
   function startSHow(star: any) {
-    //console.log("adfasdfasdf", star);
+    ////console.log("adfasdfasdf", star);
 
     switch (star) {
       case "5":
@@ -117,35 +115,36 @@ function Hotel() {
     }
   }
   function edit(data: any) {
-    //console.log(data);
+    ////console.log(data);
     settableGgl(true);
     setdata(data);
   }
 
   function remove(id: any) {
-    //console.log(id);
-    firebase
-      .database()
-      .ref("/hotel/" + id)
-      .remove()
-      .then(() => {
-        getdata();
-      })
-      .catch(() => {});
+    ////console.log(id);
+    if (window.confirm("Delete the item?")) {
+      firebase
+        .database()
+        .ref("/hotel/" + id)
+        .remove()
+        .then(() => {
+          getdata();
+        })
+        .catch(() => {});
+    }
   }
 
   function toggle() {
     setdata({});
     settableGgl(tableGgl ? false : true);
   }
-  function setCity() {}
+  // function setCity() {}
   function sendData(method: any, keys: any, datas: any) {
-    //console.log(method, keys, datas);
+    ////console.log(method, keys, datas);
     if (method == "edit") {
       edit(datas);
-    }else
-    {
-      //console.log("#######3", datas);
+    } else {
+      ////console.log("#######3", datas);
 
       remove(datas.key);
     }
@@ -153,7 +152,11 @@ function Hotel() {
 
   return (
     <div className="container-fluid">
-      
+   <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossOrigin="anonymous" />
       <button
         className={tableGgl ? "btn-danger btn" : "btn-success btn "}
         onClick={toggle}
@@ -209,11 +212,11 @@ function Hotel() {
                 aria-label="Default select example"
                 onChange={(e) => setcity(e)}
                 name="state"
-                value={data.city}
+                value={data.state}
                 className="form-control"
                 id="inputPassword4"
               >
-                <option selected>Options...</option>
+                <option>Options...</option>
                 {state.map((data: any) => {
                   return <option value={data}>{data}</option>;
                 })}
@@ -231,14 +234,13 @@ function Hotel() {
                 className="form-control"
                 id="inputPassword4"
               >
-                <option selected>Options...</option>
+                <option>Options...</option>
                 {city.map((data: any) => {
                   return <option value={data}>{data}</option>;
                 })}
               </select>
-              
             </div>
-            
+
             <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 ZIP code
@@ -400,16 +402,18 @@ function Hotel() {
         </div>
       ) : (
         <div>
+          {table.length ? (
+            <><Table
+                sendDataa={(met: any, data: any, key: any) => sendData(met, data, key)}
+                datasoure={table}
+                coll={col}
+              ></Table> </>
+          ) :  
+            (<div className="d-flex justify-content-center"><div className="spinner-border" role="status"><span className="sr-only">Loading...</span></div></div>
+          )}
           
-           { 
-           
-           table.length ? <Table sendDataa={(met: any, data: any, key: any) =>
-              sendData(met, data, key)
-            }
-            datasoure={table}
-            coll={col}
-          ></Table>:""}
         </div>
+        
       )}
     </div>
   );

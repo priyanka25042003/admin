@@ -12,21 +12,29 @@ function Flight() {
     const value = event.target.value;
     setdata({ ...data, [name]: value });
   }
+  useEffect(() => {
+    getdata();
+  }, []);
+  let col: any[] = [
+    { NAME: "flight_name" },
+    { FROM: "from_location" },
+    { TO: "to_location" },
+    { "ARRIVAL DATE": "arrival_date" },
+    { "DEPARTURE TIME": "departure_time" },
+    { DESTINATION: "destination" },
+    { ACTIONS: "" },
+  ];
 
-  let col:any[]=[{"NAME":"flight_name"},{"FROM":"from_location"},{"TO":"to_location"},{"ARRIVAL DATE":"arrival_date"},{"DEPARTURE TIME":"departure_time"},{"DESTINATION":"destination"},{"ACTIONS":""}]
-
-  function sendData(method:any,keys:any,datas:any) {
-    console.log(method,keys,datas);
+  function sendData(method: any, keys: any, datas: any) {
+    console.log(method, keys, datas);
     if (method == "edit") {
-      edit(datas)
-    }else{
-      console.log("#######3",datas);
-      
-      remove(datas.key)
-    }
-    
-  }
+      edit(datas);
+    } else {
+      console.log("#######3", datas);
 
+      remove(datas.key);
+    }
+  }
 
   function submit() {
     console.log(data);
@@ -37,8 +45,11 @@ function Flight() {
         .push(data)
         .then((res) => {
           console.log(res);
+          setTimeout(() => {
+            
+            getdata();
+          }, 2000);
           settableGgl(false);
-          getdata();
         })
         .catch((err) => {
           console.log(err);
@@ -46,7 +57,7 @@ function Flight() {
     } else {
       firebase
         .database()
-        .ref("/flight/"+data.key)
+        .ref("/flight/" + data.key)
         .update(data)
         .then((res) => {
           console.log(res);
@@ -57,10 +68,11 @@ function Flight() {
           console.log(err);
         });
     }
-    
   }
   function getdata() {
     let arr: any[] = [];
+    // debugger
+
     firebase
       .database()
       .ref("/flight")
@@ -69,6 +81,7 @@ function Flight() {
         res.forEach((element) => {
           // console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
+
           settable(arr);
           console.log(arr);
         });
@@ -77,11 +90,10 @@ function Flight() {
         console.log(err);
       });
   }
-  function edit(data:any) {
+  function edit(data: any) {
     console.log(data);
-    settableGgl (true)
-    setdata(data)
-    
+    settableGgl(true);
+    setdata(data);
   }
   function update(data: any) {
     console.log(data);
@@ -89,25 +101,33 @@ function Flight() {
     setdata(data);
   }
   function remove(id: any) {
+    if (window.confirm('Delete the item?')) {
     console.log(id);
-    firebase.database().ref("/flight/"+id).remove().then(() => {
-    getdata();
-      
-    }).catch(()=>{});
-
+    firebase
+      .database()
+      .ref("/flight/" + id)
+      .remove()
+      .then(() => {
+        getdata();
+      })
+      .catch(() => {});
+    }
   }
 
-  useEffect(() => {
-    getdata();
-  }, []);
+  
 
   function toggle() {
-    setdata({})
+    setdata({});
     settableGgl(tableGgl ? false : true);
   }
 
   return (
-    <div className="container">
+    <div className="container-fluid">
+      <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossOrigin="anonymous" />
       <button
         className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
         onClick={toggle}
@@ -353,12 +373,21 @@ function Flight() {
               })}
             </tbody>
           </table> */}
-           { 
-           
-           table.length ? 
-            <Table sendDataa={(met:any,data:any,key:any) => sendData(met,data,key)} datasoure={table} coll={col}></Table>
-            :""
-          }
+          {table.length ? (
+            <Table
+              sendDataa={(met: any, data: any, key: any) =>
+                sendData(met, data, key)
+              }
+              datasoure={table}
+              coll={col}
+            ></Table>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
