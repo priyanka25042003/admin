@@ -6,8 +6,8 @@ import stat from "../assets/state.json";
 
 function Hotel() {
   const [data, setdata]: any = useState();
-  const [table, settable]: any[] = useState([]);
-  const [state, setsate]: any[] = useState([]);
+  const [table, settable]: any = useState([]);
+  const [state, setsate]: any = useState([]);
   const [city, setcitys]: any = useState([]);
 
 
@@ -73,7 +73,6 @@ function Hotel() {
   }
   function getdata() {
     let arr: any[] = [];
-
     firebase
       .database()
       .ref("/hotel")
@@ -83,8 +82,6 @@ function Hotel() {
           // //console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
-          console.log(arr);
-          
           //console.log(arr);
         });
       })
@@ -139,11 +136,12 @@ function Hotel() {
     settableGgl(tableGgl ? false : true);
   }
   function setCity() {}
+  
   function sendData(method: any, keys: any, datas: any) {
     //console.log(method, keys, datas);
     if (method == "edit") {
       edit(datas);
-    }else
+    }
     {
       //console.log("#######3", datas);
 
@@ -152,10 +150,9 @@ function Hotel() {
   }
 
   return (
-    <div className="container-fluid">
-      
+    <div className="container">
       <button
-        className={tableGgl ? "btn-danger btn" : "btn-success btn "}
+        className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
         onClick={toggle}
       >
         {tableGgl ? (
@@ -399,16 +396,59 @@ function Hotel() {
           </div>
         </div>
       ) : (
-        <div>
-          
-           { 
-           
-           table.length ? <Table sendDataa={(met: any, data: any, key: any) =>
+        <div className=" table-responsive">
+          {/* <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">NAME</th>
+                <th scope="col">CITY</th>
+                <th scope="col">STATE</th>
+                <th scope="col">HOTAL TYPE DATE</th>
+                <th scope="col">AVAILABLE ROOMS</th>
+                <th scope="col">TOTAL ROOMS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {table.map((data: any) => {
+                // let typr = startSHow(data.hotel_type);
+                //console.log("DSsfa", typr);
+
+                return (
+                  <tr>
+                    <th> {data.hotel_name} </th>
+                    <td> {data.city} </td>
+                    <td> {data.state} </td>
+                    <td> {typr} </td>
+                    <td> {data.avilabe_rooms} </td>
+                    <td> {data.total_rooms} </td>
+                    <td>
+                      <button
+                        className="btn btn-success btn-circle btn-circle-sm m-1"
+                        style={{ borderRadius: "50% " }}
+                        onClick={() => edit(data)}
+                      >
+                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        className="btn btn-danger btn-circle btn-circle-sm m-1"
+                        style={{ borderRadius: "50% " }}
+                        onClick={() => remove(data.key)}
+                      >
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table> */}
+          <Table
+            sendDataa={(met: any, data: any, key: any) =>
               sendData(met, data, key)
             }
             datasoure={table}
             coll={col}
-          ></Table>:""}
+          ></Table>
         </div>
       )}
     </div>
