@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 export default function Table(props: any) {
   const [data, setdata]: any = useState(props);
-  // //console.log(props.datasoure);
+  // console.log(props.datasoure);  
   console.log(props);
   useEffect(() => {
     if (props) {
