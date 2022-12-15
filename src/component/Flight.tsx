@@ -4,6 +4,8 @@ import Table from "../shared/table/table";
 
 function Flight() {
   const [data, setdata]: any = useState();
+  const [datanot, setdatanot]: any = useState();
+
   const [table, settable]: any = useState([]);
 
   const [tableGgl, settableGgl]: any = useState(false);
@@ -81,8 +83,13 @@ function Flight() {
         res.forEach((element) => {
           // console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
-
-          settable(arr);
+          if (arr.length > 0) {
+            
+            settable(arr);
+          }
+          else{
+            settable("NO DATA FOUND")
+          }
           console.log(arr);
         });
       })
@@ -143,7 +150,7 @@ function Flight() {
         )}
       </button>
       {tableGgl ? (
-        <div className="form-conteiner" >
+        <div>
           <h3 className="text-center"> Flight</h3>
           <div className="row g-3">
             <div className="col-md-12">
@@ -373,7 +380,7 @@ function Flight() {
               })}
             </tbody>
           </table> */}
-          {table.length ? (
+          {table ? (
             <Table
               sendDataa={(met: any, data: any, key: any) =>
                 sendData(met, data, key)
@@ -382,6 +389,7 @@ function Flight() {
               coll={col}
             ></Table>
           ) : (
+            
             <div className="d-flex justify-content-center">
               <div className="spinner-border" role="status">
                 <span className="sr-only">Loading...</span>

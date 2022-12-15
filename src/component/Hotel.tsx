@@ -6,8 +6,8 @@ import stat from "../assets/state.json";
 
 function Hotel() {
   const [data, setdata]: any = useState();
-  const [table, settable]: any[] = useState([]);
-  const [state, setsate]: any[] = useState([]);
+  const [table, settable]: any = useState([]);
+  const [state, setsate]: any = useState([]);
   const [city, setcitys]: any = useState([]);
 
   const [tableGgl, settableGgl]: any = useState(false);
@@ -72,7 +72,6 @@ function Hotel() {
   }
   function getdata() {
     let arr: any[] = [];
-
     firebase
       .database()
       .ref("/hotel")
@@ -138,13 +137,15 @@ function Hotel() {
     setdata({});
     settableGgl(tableGgl ? false : true);
   }
-  // function setCity() {}
+  function setCity() {}
+  
   function sendData(method: any, keys: any, datas: any) {
     ////console.log(method, keys, datas);
     if (method == "edit") {
       edit(datas);
-    } else {
-      ////console.log("#######3", datas);
+    }
+    {
+      //console.log("#######3", datas);
 
       remove(datas.key);
     }
@@ -158,7 +159,7 @@ function Hotel() {
       integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
       crossOrigin="anonymous" />
       <button
-        className={tableGgl ? "btn-danger btn" : "btn-success btn "}
+        className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
         onClick={toggle}
       >
         {tableGgl ? (
@@ -401,17 +402,67 @@ function Hotel() {
           </div>
         </div>
       ) : (
-        <div>
-          {table.length ? (
-            <><Table
-                sendDataa={(met: any, data: any, key: any) => sendData(met, data, key)}
-                datasoure={table}
-                coll={col}
-              ></Table> </>
-          ) :  
-            (<div className="d-flex justify-content-center"><div className="spinner-border" role="status"><span className="sr-only">Loading...</span></div></div>
+        <div className=" table-responsive">
+          {/* <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">NAME</th>
+                <th scope="col">CITY</th>
+                <th scope="col">STATE</th>
+                <th scope="col">HOTAL TYPE DATE</th>
+                <th scope="col">AVAILABLE ROOMS</th>
+                <th scope="col">TOTAL ROOMS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {table.map((data: any) => {
+                // let typr = startSHow(data.hotel_type);
+                //console.log("DSsfa", typr);
+
+                return (
+                  <tr>
+                    <th> {data.hotel_name} </th>
+                    <td> {data.city} </td>
+                    <td> {data.state} </td>
+                    <td> {typr} </td>
+                    <td> {data.avilabe_rooms} </td>
+                    <td> {data.total_rooms} </td>
+                    <td>
+                      <button
+                        className="btn btn-success btn-circle btn-circle-sm m-1"
+                        style={{ borderRadius: "50% " }}
+                        onClick={() => edit(data)}
+                      >
+                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        className="btn btn-danger btn-circle btn-circle-sm m-1"
+                        style={{ borderRadius: "50% " }}
+                        onClick={() => remove(data.key)}
+                      >
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table> */}
+         {table ? (
+            <Table
+              sendDataa={(met: any, data: any, key: any) =>
+                sendData(met, data, key)
+              }
+              datasoure={table}
+              coll={col}
+            ></Table>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
           )}
-          
         </div>
         
       )}
