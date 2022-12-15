@@ -9,6 +9,7 @@ import Navbar from './navigations/Navbar';
 import Sidebar from './navigations/Sidebar';
 import Bus from './component/Bus';
 import Login from "./auth/login";
+import Package from './component/package';
 
 export default function App() {
   
@@ -18,10 +19,11 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navbar />}>
-            <Route path="/" element={<Home />} />
+            <Route path="home" element={<Home />} />
             <Route path="flight" element={<Flight />} />
             <Route path="hotel" element={<Hotel />} />
             <Route path="bus" element={<Bus />} />
+            <Route path="package" element={<Package />} />
           </Route>
           <Route path="login" element={<Login />} />
         </Routes>

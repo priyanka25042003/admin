@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import firebase from "firebase";
 import Table from "../shared/table/table";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Flight() {
   const [data, setdata]: any = useState();
-  const [datanot, setdatanot]: any = useState();
+  const [file, setFile]: any = useState();
 
   const [table, settable]: any = useState([]);
 
@@ -13,6 +15,10 @@ function Flight() {
     const name = event.target.name;
     const value = event.target.value;
     setdata({ ...data, [name]: value });
+  }
+  function setfile(imagefile: any) {
+    console.log(imagefile.target.files);
+    setFile(imagefile.target.files[0]);
   }
   useEffect(() => {
     getdata();
@@ -27,8 +33,8 @@ function Flight() {
     { ACTIONS: "" },
   ];
 
-  function sendData(method: any, keys: any, datas: any) {
-    console.log(method, keys, datas);
+  function sendData(method: any, datas: any, key: any) {
+    console.log(method, datas, key);
     if (method == "edit") {
       edit(datas);
     } else {
@@ -42,19 +48,43 @@ function Flight() {
     console.log(data);
     if (!data.key) {
       firebase
-        .database()
-        .ref("/flight")
-        .push(data)
+        .storage()
+        .ref("/flight/" + file.name)
+        .put(file)
         .then((res) => {
-          console.log(res);
-          setTimeout(() => {
-            
-            getdata();
-          }, 2000);
-          settableGgl(false);
+          firebase
+            .storage()
+            .ref("/flight/" + file.name)
+            .getDownloadURL()
+            .then((res) => {
+              data.img = res
+              firebase
+                .database()
+                .ref("/flight")
+                .push(data)
+                .then((res) => {
+                  console.log(res);
+                  setTimeout(() => {
+                    getdata();
+                  }, 2000);
+                  settableGgl(false);
+                  toast.success("Flight Add Success");
+
+                })
+                .catch((err) => {
+                  toast.error(err.message);
+
+                });
+            })
+            .catch((err) => {
+              toast.error(err.message);
+            });
+          // console.log(res);
+          // toast.success("Flight Update successfully");
+          // settableGgl(false);
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err.message);
         });
     } else {
       firebase
@@ -62,12 +92,34 @@ function Flight() {
         .ref("/flight/" + data.key)
         .update(data)
         .then((res) => {
+          if (file) {
+            firebase
+              .storage()
+              .ref("/flight/" + file.name)
+              .put(file)
+              .then((res) => {
+                firebase
+                  .storage()
+                  .ref("/flight/" + file.name)
+                  .getDownloadURL()
+                  .then((res) => {})
+                  .catch((err) => {
+                    toast.error(err.message);
+                  });
+                // console.log(res);
+                // toast.success("Flight Update successfully");
+                // settableGgl(false);
+              })
+              .catch((err) => {
+                toast.error(err.message);
+              });
+          }
           console.log(res);
           settableGgl(false);
           getdata();
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err.message);
         });
     }
   }
@@ -84,11 +136,9 @@ function Flight() {
           // console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
           if (arr.length > 0) {
-            
             settable(arr);
-          }
-          else{
-            settable("NO DATA FOUND")
+          } else {
+            settable("NO DATA FOUND");
           }
           console.log(arr);
         });
@@ -108,20 +158,19 @@ function Flight() {
     setdata(data);
   }
   function remove(id: any) {
-    if (window.confirm('Delete the item?')) {
-    console.log(id);
-    firebase
-      .database()
-      .ref("/flight/" + id)
-      .remove()
-      .then(() => {
-        getdata();
-      })
-      .catch(() => {});
+    if (window.confirm("Delete the item?")) {
+      console.log(id);
+      firebase
+        .database()
+        .ref("/flight/" + id)
+        .remove()
+        .then(() => {
+          getdata();
+          toast.error("Delete!");
+        })
+        .catch(() => {});
     }
   }
-
-  
 
   function toggle() {
     setdata({});
@@ -130,11 +179,13 @@ function Flight() {
 
   return (
     <div className="container-fluid">
+      <ToastContainer></ToastContainer>
       <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
-      crossOrigin="anonymous" />
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+        crossOrigin="anonymous"
+      />
       <button
         className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
         onClick={toggle}
@@ -307,6 +358,17 @@ function Flight() {
             <div>
               <hr />
             </div>
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                Image
+              </label>
+              <input
+                onChange={(e) => setfile(e)}
+                name="image"
+                type="file"
+                className="form-control"
+              />
+            </div>
             <div className="col-12 mt-4 text-center ">
               <label
                 htmlFor="exampleFormControlTextarea1"
@@ -380,16 +442,15 @@ function Flight() {
               })}
             </tbody>
           </table> */}
-          {table ? (
+          {table.length ? (
             <Table
-              sendDataa={(met: any, data: any, key: any) =>
-                sendData(met, data, key)
+              sendDataa={(met: any, key: any, data: any) =>
+                sendData(met, key, data)
               }
               datasoure={table}
               coll={col}
             ></Table>
           ) : (
-            
             <div className="d-flex justify-content-center">
               <div className="spinner-border" role="status">
                 <span className="sr-only">Loading...</span>

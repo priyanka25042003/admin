@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Link, Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Routes, NavLink, Outlet,  } from "react-router-dom";
 import Bus from "../component/Bus";
 import Flight from "../component/Flight";
 import Home from "../component/Home";
@@ -13,12 +13,13 @@ function Sidebar(porps: any) {
     <>
       {porps.show ? (
         <div className="sidebar">
-          <Link className="active" to="/">
+          <NavLink  className={({ isActive }) => (isActive ? 'active' : '')} to="home">
             Home
-          </Link>
-          <Link to="flight">Flight</Link>
-          <Link to="hotel">Hotel</Link>
-          <Link to="bus">Bus</Link>
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="flight">Flight</NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="hotel">Hotel</NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="bus">Bus</NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="package">Package</NavLink>
         </div>
       ) : ("")
       }

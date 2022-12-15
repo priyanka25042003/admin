@@ -83,7 +83,7 @@
                             className="btn btn-success btn-circle btn-circle-sm m-1"
                             style={{ borderRadius: "50% " }}
                             onClick={() =>
-                              props.sendDataa("edit", keys, maindata)
+                              props.sendDataa("edit",  maindata,keys)
                             }
                           >
                             <i className="fa fa-pencil" aria-hidden="true"></i>
@@ -92,7 +92,7 @@
                             className="btn btn-danger btn-circle btn-circle-sm m-1"
                             style={{ borderRadius: "50% " }}
                             onClick={() =>
-                              props.sendDataa("remove", keys, maindata)
+                              props.sendDataa("remove", maindata,keys)
                             }
                           >
                             <i className="fa fa-trash" aria-hidden="true"></i>

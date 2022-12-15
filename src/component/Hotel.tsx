@@ -448,7 +448,7 @@ function Hotel() {
               })}
             </tbody>
           </table> */}
-         {table ? (
+         {table.length ? (
             <Table
               sendDataa={(met: any, data: any, key: any) =>
                 sendData(met, data, key)

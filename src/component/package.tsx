@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import table from "../shared/table/table";
 import Table from "../shared/table/table";
 
-function Bus() {
+function Package() {
   const [data, setdata]: any = useState({
-    bus_name: "",
+    package_name: "",
     from_location: "",
     to_location: "",
     departure_date: "",
@@ -13,8 +13,8 @@ function Bus() {
     arrival_date: "",
     arrival_time: "",
     destination: "",
-    bus_seat_type: "",
-    bus_seat_price: "",
+    package_seat_type: "",
+    package_seat_price: "",
     total_seat: "",
     available_seat: "",
     description: "",
@@ -29,7 +29,7 @@ function Bus() {
   }
 
   let col: any[] = [
-    { NAME: "bus_name" },
+    { NAME: "package_name" },
     { FROM: "from_location" },
     { TO: "to_location" },
     { "ARRIVAL DATE": "arrival_date" },
@@ -56,7 +56,7 @@ function Bus() {
     console.log(id);
     firebase
       .database()
-      .ref("/bus/" + id)
+      .ref("/package/" + id)
       .remove()
       .then(() => {
         getdata();
@@ -73,7 +73,7 @@ function Bus() {
     let arr: any[] = [];
     firebase
       .database()
-      .ref("/bus")
+      .ref("/package")
       .get()
       .then((res) => {
         console.log(res);
@@ -95,7 +95,7 @@ function Bus() {
    
     if(!data.key){firebase
       .database()
-      .ref("/bus")
+      .ref("/package")
       .push(data)
       .then((res) => {
         console.log(res);
@@ -111,7 +111,7 @@ function Bus() {
       else {
         firebase
           .database()
-          .ref("/bus/" + data.key)
+          .ref("/package/" + data.key)
           .update(data)
           .then((res) => {
             console.log(res);
@@ -145,31 +145,31 @@ function Bus() {
           </i>
         ) : (
           <i className=" fa fa-plus" aria-hidden="true">
-            &nbsp;Add Bus{" "}
+            &nbsp;Add package{" "}
           </i>
         )}
       </button>
       {tableGgl ? (
         <div>
-          <h3 className="text-center"> Bus</h3>
+          <h3 className="text-center"> Package</h3>
           <div className="row ">
             <div className="ml-3">
-              <h3>BUS INFO</h3>
+              <h3>PACKAGE INFO</h3>
             </div>
-            <div className="col-md-12 ">
+            <div className="mt-2 col-md-12 ">
               <label htmlFor="inputPassword4" className="form-label">
-                Bus Name
+                Package Name
               </label>
               <input
                 onChange={(e) => setData(e)}
-                name="bus_name"
-                value={data.bus_name ? data.bus_name : ""}
+                name="package_name"
+                value={data.package_name ? data.package_name : ""}
                 type="text"
                 className="form-control"
-                placeholder="Bus Name"
+                placeholder="Package Name"
               />
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 From
               </label>
@@ -183,7 +183,7 @@ function Bus() {
                 placeholder="From"
               />
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 To
               </label>
@@ -196,59 +196,34 @@ function Bus() {
                 placeholder="To"
               />
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                Departure Date
+              Strating Date
               </label>
               <input
                 onChange={(e) => setData(e)}
-                name="departure_date"
-                value={data.departure_date ? data.departure_date : ""}
+                name="strating-date"
+                value={data.strating_date ? data.strating_date : ""}
                 type="date"
                 className="form-control"
-                placeholder=" Departure Date"
+                placeholder=" Strating_date"
               />
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                Departure Time
+                Ending Date
               </label>
               <input
                 onChange={(e) => setData(e)}
-                name="departure_time"
-                value={data.departure_time ? data.departure_time : ""}
-                type="time"
-                className="form-control"
-                placeholder="Departure Time"
-              />
-            </div>
-            <div className="col-md-6 col-md-6">
-              <label htmlFor="inputPassword4" className="form-label">
-                Arrival Date
-              </label>
-              <input
-                onChange={(e) => setData(e)}
-                name="arrival_date"
-                value={data.arrival_date ? data.arrival_date : ""}
+                name="endind_date"
+                value={data.ending_date ? data.ending_date : ""}
                 type="date"
                 className="form-control"
-                placeholder=" Arrival Date"
+                placeholder="Ending_Date "
               />
             </div>
-            <div className="col-md-6 col-md-6">
-              <label htmlFor="inputPassword4" className="form-label">
-                Arrival Time
-              </label>
-              <input
-                value={data.arrival_time ? data.arrival_time : ""}
-                onChange={(e) => setData(e)}
-                name="arrival_time"
-                type="time"
-                className="form-control"
-                placeholder=" Arrival Time"
-              />
-            </div>
-            <div className="col-md-12 col-md-6">
+           
+            <div className="mt-2 col-md-12 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 Destination
               </label>
@@ -261,62 +236,35 @@ function Bus() {
                 placeholder="Destination"
               />
             </div>
-            <div className=" col-md-12 mt-3">
-              <h3>BUS SEAT</h3>
-            </div>
-            <div className="col-md-6 col-md-6">
+        
+            <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                Seat Type
+                Total Price
               </label>
               <input
-                value={data.bus_seat_type ? data.bus_seat_type : ""}
+                value={data.total_price ? data.total_price : ""}
                 onChange={(e) => setData(e)}
-                name="bus_seat_type"
+                name="total_price"
                 type="Text"
                 className="form-control"
-                placeholder="Seat Type"
+                placeholder="Total Price"
               />
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-                Seat Price
+              Package Details
               </label>
               <input
-                value={data.bus_seat_price ? data.bus_seat_price : ""}
+                value={data.details ? data.details : ""}
                 onChange={(e) => setData(e)}
-                name="bus_seat_price"
+                name="details"
                 type="Text"
                 className="form-control"
-                placeholder="Seat Price"
+                placeholder="Package Details"
               />
             </div>
-            <div className="col-md-6 col-md-6">
-              <label htmlFor="inputPassword4" className="form-label">
-                Total Seat
-              </label>
-              <input
-                value={data.total_seat ? data.total_seat : ""}
-                onChange={(e) => setData(e)}
-                name="total_seat"
-                type="Text"
-                className="form-control"
-                placeholder="Total Seat"
-              />
-            </div>
-            <div className="col-md-6 col-md-6">
-              <label htmlFor="inputPassword4" className="form-label">
-                Available Seat
-              </label>
-              <input
-                value={data.available_seat ? data.available_seat : ""}
-                onChange={(e) => setData(e)}
-                name="available_seat"
-                type="Text"
-                className="form-control"
-                placeholder="Available Seat"
-              />
-            </div>
-            <div className="col-10 col-md-12 text-center ">
+           
+            <div className="mt-2 col-10 mt-2 col-md-12 text-center ">
               <label htmlFor="inputPassword4" className="form-label">
                 Discrpition
               </label>
@@ -364,4 +312,4 @@ function Bus() {
   );
 }
 
-export default Bus;
+export default Package;
