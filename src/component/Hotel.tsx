@@ -3,12 +3,15 @@ import firebase from "firebase";
 import Table from "../shared/table/table";
 import axios from "axios";
 import stat from "../assets/state.json";
+import { ToastContainer, toast } from "react-toastify";
+
 
 function Hotel() {
   const [data, setdata]: any = useState();
   const [table, settable]: any = useState([]);
   const [state, setsate]: any = useState([]);
   const [city, setcitys]: any = useState([]);
+  const [file, setFile]: any = useState();
 
   const [tableGgl, settableGgl]: any = useState(false);
   useEffect(() => {
@@ -48,6 +51,7 @@ function Hotel() {
         .then((res) => {
           ////console.log(res);
           settableGgl(false);
+          toast.success("Hotel Add Success");
           getdata();
         })
         .catch((err) => {
@@ -63,6 +67,7 @@ function Hotel() {
         .then((res) => {
           ////console.log(res);
           settableGgl(false);
+          toast.success("Hotel Update Success");
           getdata();
         })
         .catch((err) => {
@@ -128,6 +133,7 @@ function Hotel() {
         .remove()
         .then(() => {
           getdata();
+          toast.error("Delete!");
         })
         .catch(() => {});
     }
@@ -153,6 +159,7 @@ function Hotel() {
 
   return (
     <div className="container-fluid">
+      <ToastContainer></ToastContainer>
    <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
