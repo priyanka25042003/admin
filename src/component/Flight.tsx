@@ -57,7 +57,7 @@ function Flight() {
             .ref("/flight/" + file.name)
             .getDownloadURL()
             .then((res) => {
-              data.img = res
+              data.img = res;
               firebase
                 .database()
                 .ref("/flight")
@@ -69,11 +69,9 @@ function Flight() {
                   }, 2000);
                   settableGgl(false);
                   toast.success("Flight Add Success");
-
                 })
                 .catch((err) => {
                   toast.error(err.message);
-
                 });
             })
             .catch((err) => {
@@ -87,40 +85,62 @@ function Flight() {
           toast.error(err.message);
         });
     } else {
-      firebase
-        .database()
-        .ref("/flight/" + data.key)
-        .update(data)
-        .then((res) => {
-          if (file) {
+      if (file) {
+        firebase
+          .storage()
+          .ref("/flight/" + file.name)
+          .put(file)
+          .then((res) => {
+            toast.success("File Uploded");
             firebase
               .storage()
               .ref("/flight/" + file.name)
-              .put(file)
+              .getDownloadURL()
               .then((res) => {
+                data.img = res;
                 firebase
-                  .storage()
-                  .ref("/flight/" + file.name)
-                  .getDownloadURL()
-                  .then((res) => {})
+                  .database()
+                  .ref("/flight/"+data.key)
+                  .update(data)
+                  .then((res) => {
+                    console.log(res);
+                    setTimeout(() => {
+                      getdata();
+                    }, 2000);
+                    settableGgl(false);
+                    toast.success("Flight Update Success");
+                  })
                   .catch((err) => {
                     toast.error(err.message);
                   });
-                // console.log(res);
-                // toast.success("Flight Update successfully");
-                // settableGgl(false);
               })
               .catch((err) => {
                 toast.error(err.message);
               });
-          }
-          console.log(res);
-          settableGgl(false);
-          getdata();
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
+            // console.log(res);
+            // toast.success("Flight Update successfully");
+            // settableGgl(false);
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          });
+      } else {
+        firebase
+          .database()
+          .ref("/flight/" + data.key)
+          .update(data)
+          .then((res) => {
+            console.log(res);
+            setTimeout(() => {
+              getdata();
+            }, 2000);
+            settableGgl(false);
+            toast.success("Flight Update Success");
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          });
+      }
     }
   }
   function getdata() {

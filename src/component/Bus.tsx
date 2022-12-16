@@ -4,6 +4,8 @@ import table from "../shared/table/table";
 import Table from "../shared/table/table";
 
 function Bus() {
+  const [file, setFile]: any = useState();
+
   const [data, setdata]: any = useState({
     bus_name: "",
     from_location: "",
@@ -68,6 +70,10 @@ function Bus() {
     console.log(data);
     settableGgl(true);
     setdata(data);
+  }
+  function setfile(imagefile: any) {
+    console.log(imagefile.target.files);
+    setFile(imagefile.target.files[0]);
   }
   function getdata() {
     let arr: any[] = [];
@@ -316,6 +322,18 @@ function Bus() {
                 placeholder="Available Seat"
               />
             </div>
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                Image
+              </label>
+              <input
+                onChange={(e) => setfile(e)}
+                name="image"
+                type="file"
+                className="form-control"
+              />
+            </div>
+            
             <div className="col-10 col-md-12 text-center ">
               <label htmlFor="inputPassword4" className="form-label">
                 Discrpition
@@ -329,6 +347,7 @@ function Bus() {
               ></textarea>
             </div>
           </div>
+          
           <div className="text-center ">
             <button
               onClick={submit}
