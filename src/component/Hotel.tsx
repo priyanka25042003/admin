@@ -3,6 +3,8 @@ import firebase from "firebase";
 import Table from "../shared/table/table";
 import axios from "axios";
 import stat from "../assets/state.json";
+import { ToastContainer, toast } from "react-toastify";
+
 
 function Hotel() {
   const [data, setdata]: any = useState();
@@ -173,6 +175,7 @@ function Hotel() {
         .remove()
         .then(() => {
           getdata();
+          toast.error("Delete!");
         })
         .catch(() => { });
     }

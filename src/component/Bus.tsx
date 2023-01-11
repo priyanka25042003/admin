@@ -2,6 +2,8 @@ import firebase from "firebase";
 import { useEffect, useState } from "react";
 import table from "../shared/table/table";
 import Table from "../shared/table/table";
+import { ToastContainer, toast } from "react-toastify";
+
 
 function Bus() {
   const [file, setFile]: any = useState();
@@ -21,6 +23,7 @@ function Bus() {
     available_seat: "",
     description: "",
   });
+    
   const [table, settable]: any = useState([]);
   const [tableGgl, settableGgl]: any = useState(false);
 
@@ -62,6 +65,7 @@ function Bus() {
       .remove()
       .then(() => {
         getdata();
+        toast.error("Delete!");
       })
       .catch(() => {});
     }
@@ -109,6 +113,8 @@ function Bus() {
           getdata();
         }, 2000);
         settableGgl(false);
+        toast.success("Bus Add Success");
+
       })
       .catch((err) => {
         console.log(err);
@@ -122,6 +128,8 @@ function Bus() {
           .then((res) => {
             console.log(res);
             settableGgl(false);
+            toast.success("Bus Update Success");
+
             getdata();
           })
           .catch((err) => {
@@ -136,6 +144,7 @@ function Bus() {
 
   return (
     <div className="container-fluid">
+      <ToastContainer></ToastContainer>
        <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"

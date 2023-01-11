@@ -2,9 +2,26 @@ import firebase from "firebase";
 import { useEffect, useState } from "react";
 import table from "../shared/table/table";
 import Table from "../shared/table/table";
+import { ToastContainer, toast } from "react-toastify";
+
 
 function Package() {
-  const [data, setdata]: any = useState({});
+  const [data, setdata]: any = useState({
+    package_name: "",
+    from_location: "",
+    to_location: "",
+    departure_date: "",
+    departure_time: "",
+    arrival_date: "",
+    arrival_time: "",
+    destination: "",
+    package_seat_type: "",
+    package_seat_price: "",
+    total_seat: "",
+    available_seat: "",
+    description: "",
+  });
+  
   const [table, settable]: any = useState([]);
   const [tableGgl, settableGgl]: any = useState(false);
 
@@ -47,6 +64,7 @@ function Package() {
       .remove()
       .then(() => {
         getdata();
+        toast.error("Delete!");
       })
       .catch(() => {});
     }
@@ -90,6 +108,8 @@ function Package() {
           getdata();
         }, 2000);
         settableGgl(false);
+        toast.success("Package Add Success");
+
       })
       .catch((err) => {
         console.log(err);
@@ -103,6 +123,8 @@ function Package() {
           .then((res) => {
             console.log(res);
             settableGgl(false);
+            toast.success("Package Update Success");
+
             getdata();
           })
           .catch((err) => {
@@ -117,6 +139,7 @@ function Package() {
 
   return (
     <div className="container-fluid">
+      <ToastContainer></ToastContainer>
        <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
