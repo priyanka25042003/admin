@@ -9,6 +9,7 @@ function Hotel() {
   const [table, settable]: any = useState([]);
   const [state, setsate]: any = useState([]);
   const [city, setcitys]: any = useState([]);
+  const [file, setFile]: any = useState();
 
   const [tableGgl, settableGgl]: any = useState(false);
   useEffect(() => {
@@ -17,6 +18,10 @@ function Hotel() {
     setsate(Object.keys(stat));
     //console.log(stat);
   }, []);
+  function setfile(imagefile: any) {
+    console.log(imagefile.target.files);
+    setFile(imagefile.target.files[0]);
+  }
   function setData(event: any) {
     ////console.log(event.target.name);
 
@@ -40,34 +45,74 @@ function Hotel() {
 
     if (!data.key && data.key == null) {
       ////console.log("runn");
-
       firebase
-        .database()
-        .ref("/hotel")
-        .push(data)
-        .then((res) => {
-          ////console.log(res);
-          settableGgl(false);
-          getdata();
+        .storage()
+        .ref("/flight/" + file.name)
+        .put(file)
+        .then((res: any) => {
+          firebase
+            .storage()
+            .ref("/flight/" + file.name)
+            .getDownloadURL()
+            .then((res) => {
+              data.img = res;
+              firebase
+                .database()
+                .ref("/hotel")
+                .push(data)
+                .then((res) => {
+                  ////console.log(res);
+                  settableGgl(false);
+                  getdata();
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }).catch(err => {
+              console.log(err);
+
+            })
+        }).catch((err: any) => {
+          console.log(err);
+
+
         })
-        .catch((err) => {
-          ////console.log(err);
-        });
+
     } else {
       ////console.log("fdasd");
 
       firebase
-        .database()
-        .ref("/hotel/" + data.key)
-        .update(data)
-        .then((res) => {
-          ////console.log(res);
-          settableGgl(false);
-          getdata();
-        })
-        .catch((err) => {
-          ////console.log(err);
-        });
+      .storage()
+      .ref("/flight/" + file.name)
+      .put(file)
+      .then((res: any) => {
+        firebase
+          .storage()
+          .ref("/flight/" + file.name)
+          .getDownloadURL()
+          .then((res) => {
+            data.img = res;
+            firebase
+              .database()
+              .ref("/hotel/"+data.key)
+              .update(data)
+              .then((res) => {
+                ////console.log(res);
+                settableGgl(false);
+                getdata();
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }).catch(err => {
+            console.log(err);
+
+          })
+      }).catch((err: any) => {
+        console.log(err);
+
+
+      })
     }
   }
   function getdata() {
@@ -129,7 +174,7 @@ function Hotel() {
         .then(() => {
           getdata();
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
 
@@ -137,27 +182,26 @@ function Hotel() {
     setdata({});
     settableGgl(tableGgl ? false : true);
   }
-  function setCity() {}
-  
-  function sendData(method: any, keys: any, datas: any) {
-    ////console.log(method, keys, datas);
-    if (method == "edit") {
-      edit(datas);
-    }
-    {
-      //console.log("#######3", datas);
+  function setCity() { }
 
-      remove(datas.key);
+  function sendData(method: any, dataa: any, keys: any) {
+    console.log(method);
+
+    if (method == "edit") {
+      edit(dataa);
+    }
+    else {
+      remove(dataa.key);
     }
   }
 
   return (
     <div className="container-fluid">
-   <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
-      crossOrigin="anonymous" />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+        crossOrigin="anonymous" />
       <button
         className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
         onClick={toggle}
@@ -373,6 +417,18 @@ function Hotel() {
               />
             </div>
 
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                Image
+              </label>
+              <input
+                onChange={(e) => setfile(e)}
+                name="iamge"
+                type="file"
+                className="form-control"
+                id="inputCity"
+              />
+            </div>
             <div className="col-12 mt-4 text-center ">
               <label
                 htmlFor="exampleFormControlTextarea1"
@@ -448,7 +504,7 @@ function Hotel() {
               })}
             </tbody>
           </table> */}
-         {table.length ? (
+          {table.length ? (
             <Table
               sendDataa={(met: any, data: any, key: any) =>
                 sendData(met, data, key)
@@ -464,7 +520,7 @@ function Hotel() {
             </div>
           )}
         </div>
-        
+
       )}
     </div>
   );

@@ -4,21 +4,7 @@ import table from "../shared/table/table";
 import Table from "../shared/table/table";
 
 function Package() {
-  const [data, setdata]: any = useState({
-    package_name: "",
-    from_location: "",
-    to_location: "",
-    departure_date: "",
-    departure_time: "",
-    arrival_date: "",
-    arrival_time: "",
-    destination: "",
-    package_seat_type: "",
-    package_seat_price: "",
-    total_seat: "",
-    available_seat: "",
-    description: "",
-  });
+  const [data, setdata]: any = useState({});
   const [table, settable]: any = useState([]);
   const [tableGgl, settableGgl]: any = useState(false);
 
@@ -32,8 +18,9 @@ function Package() {
     { NAME: "package_name" },
     { FROM: "from_location" },
     { TO: "to_location" },
-    { "ARRIVAL DATE": "arrival_date" },
-    { "DEPARTURE TIME": "departure_time" },
+    { "STATING  DATE": "strating_date" },
+    { "ENDING TIME": "ending_date" },
+    {"TOTAL PRICE":"total_price"},
     {"TOTAL SEATS":"total_seat"},
     { DESTINATION: "destination" },
     
@@ -82,7 +69,7 @@ function Package() {
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
           console.log(arr);
-
+          
           ////console.log(arr);
         });
       })
@@ -202,7 +189,7 @@ function Package() {
               </label>
               <input
                 onChange={(e) => setData(e)}
-                name="strating-date"
+                name="strating_date"
                 value={data.strating_date ? data.strating_date : ""}
                 type="date"
                 className="form-control"
@@ -216,7 +203,7 @@ function Package() {
               <input
                 onChange={(e) => setData(e)}
                 name="endind_date"
-                value={data.ending_date ? data.ending_date : ""}
+                value={data.ending_date }
                 type="date"
                 className="form-control"
                 placeholder="Ending_Date "

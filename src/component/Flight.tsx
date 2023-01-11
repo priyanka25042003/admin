@@ -3,7 +3,8 @@ import firebase from "firebase";
 import Table from "../shared/table/table";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import airport from "../assets/airport.json";
+import "./flight.css";
 function Flight() {
   const [data, setdata]: any = useState();
   const [file, setFile]: any = useState();
@@ -100,7 +101,7 @@ function Flight() {
                 data.img = res;
                 firebase
                   .database()
-                  .ref("/flight/"+data.key)
+                  .ref("/flight/" + data.key)
                   .update(data)
                   .then((res) => {
                     console.log(res);
@@ -188,13 +189,87 @@ function Flight() {
           getdata();
           toast.error("Delete!");
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
 
   function toggle() {
     setdata({});
     settableGgl(tableGgl ? false : true);
+  }
+  const [autosagetion, setautosagetion]: any[] = useState([]);
+  const [showautosagetion, setshowautosagetion]: any = useState(false);
+  const [showautofrom, setshowautofrom]: any = useState(false);
+
+  const [search, setsearch]: any = useState()
+  const [next_plan, setnxtplan] = useState<any[]>([]);
+  const [filterh, setfilterh]: any = useState([]);
+
+  function filterDatah(e: any) {
+    let name: any = e.target.name;
+    let val: any = e.target.value;
+    console.log({ ...filterh, [name]: val });
+    setfilterh({ ...filterh, [name]: val });
+    if (name === "From") {
+      hendelautosagetion(e);
+    } else {
+      hendelautosfrom(e)
+    }
+  }
+  useEffect(() => {
+    getdata();
+  }, []);
+  
+  function hendelautosagetion(e: any) {
+    setshowautosagetion(true);
+    let ar: any[] = [];
+    airport.airports.forEach((element: any) => {
+      console.log(element["airport_name"]);
+
+      const capitalized =
+        e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+      console.log(capitalized);
+
+      if (element["airport_name"].startsWith(capitalized)) {
+        ar.push(element);
+      }
+    });
+    setautosagetion(ar);
+
+  }
+  function hendelautosfrom(e: any) {
+    setshowautofrom(true);
+    let ar: any[] = [];
+    airport.airports.forEach((element: any) => {
+      console.log(element["airport_name"]);
+
+      const capitalized =
+        e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+      console.log(capitalized);
+
+      if (element["airport_name"].startsWith(capitalized)) {
+        ar.push(element);
+      }
+    });
+    setautosagetion(ar);
+
+  }
+
+  window.onclick = () => {
+    setshowautosagetion(false);
+    setshowautofrom(false);
+
+  };
+
+  function select(params: any, location: any) {
+    if (location == "From") {
+      setfilterh({ From: params });
+      setshowautosagetion(false);
+    } else {
+      setfilterh({ To: params });
+      setshowautofrom(false);
+    }
+
   }
 
   return (
@@ -242,27 +317,64 @@ function Flight() {
                 From
               </label>
               <input
-                onChange={(e) => setData(e)}
-                name="from_location"
-                value={data.from_location}
                 type="text"
+                name="From"
+                onInput={(e) => filterDatah(e)}
                 className="form-control"
-                id="inputPassword4"
+                list="origin-options"
+                id="origin-input"
+                placeholder="Location"
+                value={filterh.From}
+                aria-describedby="origin-label"
               />
+              {showautosagetion ? (
+                <div className="autosagetion">
+                  {autosagetion.map((item: any) => {
+                    return (
+                      <div
+                        onClick={() => select(item.airport_name, "From")}
+                        className="list-item"
+                      >
+                        {item.airport_name}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress" className="form-label">
                 To
               </label>
               <input
-                onChange={(e) => setData(e)}
-                name="to_location"
-                value={data.to_location}
-                type="text"
-                className="form-control"
-                id="inputAddress"
-                placeholder="1234 Main St"
-              />
+                                type="text"
+                                name="To"
+                                onInput={(e) => filterDatah(e)}
+                                className="form-control"
+                                list="origin-options"
+                                id="origin-input"
+                                placeholder="Location"
+                                value={filterh.To}
+                                aria-describedby="origin-label"
+                            />
+                            {showautofrom ? (
+                                <div className="autosagetion">
+                                    {autosagetion.map((item: any) => {
+                                        return (
+                                            <div
+                                                onClick={() => select(item.airport_name, "to")}
+                                                className="list-item"
+                                            >
+                                                {item.airport_name}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                ""
+                            )}
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress2" className="form-label">
