@@ -32,6 +32,8 @@ function Package() {
   }
 
   let col: any[] = [
+    { IMAGE: "img" },
+
     { NAME: "package_name" },
     { FROM: "from_location" },
     { TO: "to_location" },

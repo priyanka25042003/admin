@@ -33,6 +33,7 @@ function Hotel() {
     ////console.log({ ...data, [name]: value });
   }
   let col = [
+    { IMAGE: "img" },
     { NAME: "hotel_name" },
     { CITY: "city" },
     { STATE: "state" },

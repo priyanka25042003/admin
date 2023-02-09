@@ -40,7 +40,7 @@ function Navbar() {
         //         <Link to='/bus'><li>Bus</li></Link>
         //     </ul>
         // </nav> */}
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <a className="navbar-brand" href="#">
             Logo
           </a>

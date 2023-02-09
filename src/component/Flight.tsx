@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import firebase from "firebase";
 import Table from "../shared/table/table";
@@ -26,6 +25,7 @@ function Flight() {
     getdata();
   }, []);
   let col: any[] = [
+    { IMAGE: "img" },
     { NAME: "flight_name" },
     { FROM: "from_location" },
     { TO: "to_location" },
@@ -210,8 +210,8 @@ function Flight() {
     let name: any = e.target.name;
     let val: any = e.target.value;
     console.log({ ...filterh, [name]: val });
-    setfilterh({ ...filterh, [name]: val });
-    if (name === "From") {
+    setdata({ ...data, [name]: val });
+    if (name === "from_location") {
       hendelautosagetion(e);
     } else {
       hendelautosfrom(e)
@@ -220,7 +220,7 @@ function Flight() {
   useEffect(() => {
     getdata();
   }, []);
-  
+
   function hendelautosagetion(e: any) {
     setshowautosagetion(true);
     let ar: any[] = [];
@@ -264,10 +264,10 @@ function Flight() {
 
   function select(params: any, location: any) {
     if (location == "From") {
-      setfilterh({ From: params });
+      setdata({ ...data, from_location: params });
       setshowautosagetion(false);
     } else {
-      setfilterh({ To: params });
+      setdata({ ...data, to_location: params });
       setshowautofrom(false);
     }
 
@@ -319,13 +319,13 @@ function Flight() {
               </label>
               <input
                 type="text"
-                name="From"
+                name="from_location"
                 onInput={(e) => filterDatah(e)}
                 className="form-control"
                 list="origin-options"
                 id="origin-input"
                 placeholder="Location"
-                value={filterh.From}
+                value={data.from_location}
                 aria-describedby="origin-label"
               />
               {showautosagetion ? (
@@ -350,32 +350,32 @@ function Flight() {
                 To
               </label>
               <input
-                                type="text"
-                                name="To"
-                                onInput={(e) => filterDatah(e)}
-                                className="form-control"
-                                list="origin-options"
-                                id="origin-input"
-                                placeholder="Location"
-                                value={filterh.To}
-                                aria-describedby="origin-label"
-                            />
-                            {showautofrom ? (
-                                <div className="autosagetion">
-                                    {autosagetion.map((item: any) => {
-                                        return (
-                                            <div
-                                                onClick={() => select(item.airport_name, "to")}
-                                                className="list-item"
-                                            >
-                                                {item.airport_name}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            ) : (
-                                ""
-                            )}
+                type="text"
+                name="to_location"
+                onInput={(e) => filterDatah(e)}
+                className="form-control"
+                list="origin-options"
+                id="origin-input"
+                placeholder="Location"
+                value={data.to_location}
+                aria-describedby="origin-label"
+              />
+              {showautofrom ? (
+                <div className="autosagetion">
+                  {autosagetion.map((item: any) => {
+                    return (
+                      <div
+                        onClick={() => select(item.airport_name, "to")}
+                        className="list-item"
+                      >
+                        {item.airport_name}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress2" className="form-label">
