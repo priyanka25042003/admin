@@ -10,6 +10,7 @@ import Sidebar from './navigations/Sidebar';
 import Bus from './component/Bus';
 import Login from "./auth/login";
 import Package from './component/package';
+import Offers from './component/offers';
 
 export default function App() {
   
@@ -24,6 +25,8 @@ export default function App() {
             <Route path="hotel" element={<Hotel />} />
             <Route path="bus" element={<Bus />} />
             <Route path="package" element={<Package />} />
+            <Route path="offers" element={<Offers />} />
+
           </Route>
           <Route path="login" element={<Login />} />
         </Routes>

@@ -34,11 +34,14 @@ function Package() {
   }
 
   let col: any[] = [
+    { IMAGE: "img" },
+
     { NAME: "package_name" },
     { FROM: "from_location" },
     { TO: "to_location" },
-    { "ARRIVAL DATE": "arrival_date" },
-    { "DEPARTURE TIME": "departure_time" },
+    { "STATING  DATE": "strating_date" },
+    { "ENDING TIME": "ending_date" },
+    {"TOTAL PRICE":"total_price"},
     {"TOTAL SEATS":"total_seat"},
     { DESTINATION: "destination" },
     
@@ -92,7 +95,7 @@ function Package() {
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
           console.log(arr);
-
+          
           ////console.log(arr);
         });
       })
@@ -217,7 +220,7 @@ function Package() {
               </label>
               <input
                 onChange={(e) => setData(e)}
-                name="strating-date"
+                name="strating_date"
                 value={data.strating_date ? data.strating_date : ""}
                 type="date"
                 className="form-control"
@@ -231,7 +234,7 @@ function Package() {
               <input
                 onChange={(e) => setData(e)}
                 name="endind_date"
-                value={data.ending_date ? data.ending_date : ""}
+                value={data.ending_date }
                 type="date"
                 className="form-control"
                 placeholder="Ending_Date "

@@ -34,6 +34,7 @@ function Bus() {
   }
 
   let col: any[] = [
+    { IMAGE: "img" },
     { NAME: "bus_name" },
     { FROM: "from_location" },
     { TO: "to_location" },

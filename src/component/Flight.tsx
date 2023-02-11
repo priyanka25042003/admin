@@ -1,10 +1,10 @@
-
 import { useEffect, useState } from "react";
 import firebase from "firebase";
 import Table from "../shared/table/table";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import airport from "../assets/airport.json";
+import "./flight.css";
 function Flight() {
   const [data, setdata]: any = useState();
   const [file, setFile]: any = useState();
@@ -25,6 +25,7 @@ function Flight() {
     getdata();
   }, []);
   let col: any[] = [
+    { IMAGE: "img" },
     { NAME: "flight_name" },
     { FROM: "from_location" },
     { TO: "to_location" },
@@ -101,7 +102,7 @@ function Flight() {
                 data.img = res;
                 firebase
                   .database()
-                  .ref("/flight/"+data.key)
+                  .ref("/flight/" + data.key)
                   .update(data)
                   .then((res) => {
                     console.log(res);
@@ -189,13 +190,87 @@ function Flight() {
           getdata();
           toast.error("Delete!");
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
 
   function toggle() {
     setdata({});
     settableGgl(tableGgl ? false : true);
+  }
+  const [autosagetion, setautosagetion]: any[] = useState([]);
+  const [showautosagetion, setshowautosagetion]: any = useState(false);
+  const [showautofrom, setshowautofrom]: any = useState(false);
+
+  const [search, setsearch]: any = useState()
+  const [next_plan, setnxtplan] = useState<any[]>([]);
+  const [filterh, setfilterh]: any = useState([]);
+
+  function filterDatah(e: any) {
+    let name: any = e.target.name;
+    let val: any = e.target.value;
+    console.log({ ...filterh, [name]: val });
+    setdata({ ...data, [name]: val });
+    if (name === "from_location") {
+      hendelautosagetion(e);
+    } else {
+      hendelautosfrom(e)
+    }
+  }
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  function hendelautosagetion(e: any) {
+    setshowautosagetion(true);
+    let ar: any[] = [];
+    airport.airports.forEach((element: any) => {
+      console.log(element["airport_name"]);
+
+      const capitalized =
+        e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+      console.log(capitalized);
+
+      if (element["airport_name"].startsWith(capitalized)) {
+        ar.push(element);
+      }
+    });
+    setautosagetion(ar);
+
+  }
+  function hendelautosfrom(e: any) {
+    setshowautofrom(true);
+    let ar: any[] = [];
+    airport.airports.forEach((element: any) => {
+      console.log(element["airport_name"]);
+
+      const capitalized =
+        e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+      console.log(capitalized);
+
+      if (element["airport_name"].startsWith(capitalized)) {
+        ar.push(element);
+      }
+    });
+    setautosagetion(ar);
+
+  }
+
+  window.onclick = () => {
+    setshowautosagetion(false);
+    setshowautofrom(false);
+
+  };
+
+  function select(params: any, location: any) {
+    if (location == "From") {
+      setdata({ ...data, from_location: params });
+      setshowautosagetion(false);
+    } else {
+      setdata({ ...data, to_location: params });
+      setshowautofrom(false);
+    }
+
   }
 
   return (
@@ -243,27 +318,64 @@ function Flight() {
                 From
               </label>
               <input
-                onChange={(e) => setData(e)}
-                name="from_location"
-                value={data.from_location}
                 type="text"
+                name="from_location"
+                onInput={(e) => filterDatah(e)}
                 className="form-control"
-                id="inputPassword4"
+                list="origin-options"
+                id="origin-input"
+                placeholder="Location"
+                value={data.from_location}
+                aria-describedby="origin-label"
               />
+              {showautosagetion ? (
+                <div className="autosagetion">
+                  {autosagetion.map((item: any) => {
+                    return (
+                      <div
+                        onClick={() => select(item.airport_name, "From")}
+                        className="list-item"
+                      >
+                        {item.airport_name}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress" className="form-label">
                 To
               </label>
               <input
-                onChange={(e) => setData(e)}
-                name="to_location"
-                value={data.to_location}
                 type="text"
+                name="to_location"
+                onInput={(e) => filterDatah(e)}
                 className="form-control"
-                id="inputAddress"
-                placeholder="1234 Main St"
+                list="origin-options"
+                id="origin-input"
+                placeholder="Location"
+                value={data.to_location}
+                aria-describedby="origin-label"
               />
+              {showautofrom ? (
+                <div className="autosagetion">
+                  {autosagetion.map((item: any) => {
+                    return (
+                      <div
+                        onClick={() => select(item.airport_name, "to")}
+                        className="list-item"
+                      >
+                        {item.airport_name}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress2" className="form-label">
