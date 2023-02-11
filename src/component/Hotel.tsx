@@ -7,11 +7,12 @@ import { ToastContainer, toast } from "react-toastify";
 
 
 function Hotel() {
+  const [file, setFile]: any = useState();
   const [data, setdata]: any = useState();
   const [table, settable]: any = useState([]);
   const [state, setsate]: any = useState([]);
   const [city, setcitys]: any = useState([]);
-  const [file, setFile]: any = useState();
+  
 
   const [tableGgl, settableGgl]: any = useState(false);
   useEffect(() => {
@@ -38,6 +39,11 @@ function Hotel() {
     { ACTION: "" },
   ];
 
+  function setfile(imagefile: any) {
+    console.log(imagefile.target.files);
+    setFile(imagefile.target.files[0]);
+  }
+  
   function submit() {
     ////console.log(data);
 
@@ -264,7 +270,7 @@ function Hotel() {
             </div>
             <hr />
             <div className="col-md-12 m-2">
-              <h3>ROOS INFO</h3>
+              <h3>ROOM INFO</h3>
             </div>
             <div className="col-md-6">
               <label htmlFor="inputAddress" className="form-label">
@@ -377,6 +383,17 @@ function Hotel() {
                 type="text"
                 className="form-control"
                 id="inputCity"
+              />
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                Image
+              </label>
+              <input
+                onChange={(e) => setfile(e)}
+                name="image"
+                type="file"
+                className="form-control"
               />
             </div>
 
