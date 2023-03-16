@@ -6,7 +6,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 
 function Package() {
-  const [file, setFile]: any = useState();
 
   const [data, setdata]: any = useState({
     package_name: "",
@@ -78,6 +77,8 @@ function Package() {
     settableGgl(true);
     setdata(data);
   }
+  const [file, setFile]: any = useState();
+
   function setfile(imagefile: any) {
     console.log(imagefile.target.files);
     setFile(imagefile.target.files[0]);
@@ -105,40 +106,79 @@ function Package() {
       
   }
   function submit() {
-   
-    if(!data.key){firebase
-      .database()
-      .ref("/package")
-      .push(data)
-      .then((res) => {
-        console.log(res);
-        setTimeout(() => {
-          getdata();
-        }, 2000);
-        settableGgl(false);
-        toast.success("Package Add Success");
+    console.log("fdasd");
 
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!data.key && data.key == null) {
+      ////console.log("runn");
+      firebase
+        .storage()
+        .ref("/package/" + file.name)
+        .put(file)
+        .then((res: any) => {
+          firebase
+            .storage()
+            .ref("/package/" + file.name)
+            .getDownloadURL()
+            .then((res) => {
+              data.img = res;
+              firebase
+                .database()
+                .ref("/package")
+                .push(data)
+                .then((res) => {
+                  ////console.log(res);
+                  settableGgl(false);
+                  getdata();
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }).catch(err => {
+              console.log(err);
+
+            })
+        }).catch((err: any) => {
+          console.log(err);
+
+
+        })
+
+    } else {
+      console.log("fdasd");
+
+      firebase
+        .storage()
+        .ref("/package/" + file.name)
+        .put(file)
+        .then((res: any) => {
+          firebase
+            .storage()
+            .ref("/package/" + file.name)
+            .getDownloadURL()
+            .then((res) => {
+              data.img = res;
+              firebase
+                .database()
+                .ref("/package/" + data.key)
+                .update(data)
+                .then((res) => {
+                  ////console.log(res);
+                  settableGgl(false);
+                  getdata();
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }).catch(err => {
+              console.log(err);
+
+            })
+        }).catch((err: any) => {
+          console.log(err);
+
+
+        })
     }
-      else {
-        firebase
-          .database()
-          .ref("/package/" + data.key)
-          .update(data)
-          .then((res) => {
-            console.log(res);
-            settableGgl(false);
-            toast.success("Package Update Success");
-
-            getdata();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
   }
   function toggle() {
     setdata({});
@@ -254,7 +294,18 @@ function Package() {
                 placeholder="Destination"
               />
             </div>
-        
+            <div className="col-md-6">
+              <label htmlFor="inputCity" className="form-label">
+                Image
+              </label>
+              <input
+                onChange={(e) => setfile(e)}
+                name="iamge"
+                type="file"
+                className="form-control"
+                id="inputCity"
+              />
+            </div>
             <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 Total Price

@@ -103,41 +103,105 @@ function Bus() {
       
   }
   function submit() {
-   
-    if(!data.key){firebase
-      .database()
-      .ref("/bus")
-      .push(data)
-      .then((res) => {
-        console.log(res);
-        setTimeout(() => {
-          getdata();
-        }, 2000);
-        settableGgl(false);
-        toast.success("Bus Add Success");
-
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
-      else {
+    console.log(data);
+    if (!data.key) {
+      firebase
+        .storage()
+        .ref("/bus/" + file.name)
+        .put(file)
+        .then((res) => {
+          firebase
+            .storage()
+            .ref("/bus/" + file.name)
+            .getDownloadURL()
+            .then((res) => {
+              data.img = res;
+              firebase
+                .database()
+                .ref("/bus")
+                .push(data)
+                .then((res) => {
+                  console.log(res);
+                  setTimeout(() => {
+                    getdata();
+                  }, 2000);
+                  settableGgl(false);
+                  toast.success("Bus Add Success");
+                })
+                .catch((err) => {
+                  toast.error(err.message);
+                });
+            })
+            .catch((err) => {
+              toast.error(err.message);
+            });
+          // console.log(res);
+          // toast.success("Bus Update successfully");
+          // settableGgl(false);
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    } else {
+      if (file) {
+        firebase
+          .storage()
+          .ref("/bus/" + file.name)
+          .put(file)
+          .then((res) => {
+            toast.success("File Uploded");
+            firebase
+              .storage()
+              .ref("/bus/" + file.name)
+              .getDownloadURL()
+              .then((res) => {
+                data.img = res;
+                firebase
+                  .database()
+                  .ref("/bus/" + data.key)
+                  .update(data)
+                  .then((res) => {
+                    console.log(res);
+                    setTimeout(() => {
+                      getdata();
+                    }, 2000);
+                    settableGgl(false);
+                    toast.success("Bus Update Success");
+                  })
+                  .catch((err) => {
+                    toast.error(err.message);
+                  });
+              })
+              .catch((err) => {
+                toast.error(err.message);
+              });
+            // console.log(res);
+            // toast.success("Bus Update successfully");
+            // settableGgl(false);
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          });
+      } else {
         firebase
           .database()
           .ref("/bus/" + data.key)
           .update(data)
           .then((res) => {
             console.log(res);
+            setTimeout(() => {
+              getdata();
+            }, 2000);
             settableGgl(false);
             toast.success("Bus Update Success");
-
-            getdata();
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(err.message);
           });
       }
+    }
   }
+  
   function toggle() {
     setdata({});
     settableGgl(tableGgl ? false : true);
