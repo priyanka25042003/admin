@@ -3,9 +3,18 @@ import { useEffect, useState } from "react";
 import table from "../shared/table/table";
 import Table from "../shared/table/table";
 import { ToastContainer, toast } from "react-toastify";
+import state from "../assets/state.json";
 
 
 function Bus() {
+  let cityarr:any[]=[]
+  let city =  Object.values(state)
+  city.forEach(i=>{
+    i.forEach(city=>{
+      cityarr.push(city)
+      
+    })
+  })
   const [file, setFile]: any = useState();
 
   const [data, setdata]: any = useState({
@@ -26,6 +35,7 @@ function Bus() {
     
   const [table, settable]: any = useState([]);
   const [tableGgl, settableGgl]: any = useState(false);
+
 
   function setData(e: any) {
     const name = e.target.name;
@@ -183,6 +193,7 @@ function Bus() {
             toast.error(err.message);
           });
       } else {
+        debugger
         firebase
           .database()
           .ref("/bus/" + data.key)
@@ -249,32 +260,43 @@ function Bus() {
                 placeholder="Bus Name"
               />
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 From
               </label>
-
-              <input
+              <select
                 onChange={(e) => setData(e)}
+
+                aria-label="Default select example"
                 name="from_location"
-                value={data.from_location ? data.from_location : ""}
-                type="text"
+                value={data.from_location}
                 className="form-control"
-                placeholder="From"
-              />
+                id="inputPassword4"
+              >
+                <option>Options...</option>
+                {cityarr.map((data: any) => {
+                  return <option value={data}>{data}</option>;
+                })}
+              </select>
             </div>
-            <div className="col-md-6 col-md-6">
+            <div className="col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 To
               </label>
-              <input
+              <select
                 onChange={(e) => setData(e)}
+
+                aria-label="Default select example"
                 name="to_location"
-                value={data.to_location ? data.to_location : ""}
-                type="text"
+                value={data.to_location}
                 className="form-control"
-                placeholder="To"
-              />
+                id="inputPassword4"
+              >
+                <option>Options...</option>
+                {cityarr.map((data: any) => {
+                  return <option value={data}>{data}</option>;
+                })}
+              </select>
             </div>
             <div className="col-md-6 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">

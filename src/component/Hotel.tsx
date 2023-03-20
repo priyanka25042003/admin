@@ -43,15 +43,10 @@ function Hotel() {
     { "TOTAL ROOMS": "total_rooms" },
     { ACTION: "" },
   ];
-
-  function setfile(imagefile: any) {
-    console.log(imagefile.target.files);
-    setFile(imagefile.target.files[0]);
-  }
-  
+  const [loding, setloding] = useState(true)
   function submit() {
     ////console.log(data);
-
+    setloding(true);
     if (!data.key && data.key == null) {
       ////console.log("runn");
       firebase
@@ -71,18 +66,26 @@ function Hotel() {
                 .push(data)
                 .then((res) => {
                   ////console.log(res);
+    setloding(true);
+
                   settableGgl(false);
                   getdata();
                 })
                 .catch((err) => {
                   console.log(err);
+    setloding(false);
+
                 });
             }).catch(err => {
               console.log(err);
+    setloding(false);
+
 
             })
         }).catch((err: any) => {
           console.log(err);
+    setloding(false);
+
 
 
         })
@@ -112,13 +115,17 @@ function Hotel() {
               })
               .catch((err) => {
                 console.log(err);
+    setloding(false);
+
               });
           }).catch(err => {
             console.log(err);
+            setloding(false);
 
           })
       }).catch((err: any) => {
         console.log(err);
+        setloding(false);
 
 
       })
@@ -472,9 +479,15 @@ function Hotel() {
                 onClick={submit}
                 type="submit"
                 className="btn btn-primary  "
+                disabled={loding}
               >
                 {data.key ? "Update" : "Submit"}
               </button>
+              { !loding?
+                <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>:""
+              }
             </div>
           </div>
         </div>

@@ -4,7 +4,6 @@ import table from "../shared/table/table";
 import Table from "../shared/table/table";
 import { ToastContainer, toast } from "react-toastify";
 
-
 function Package() {
 
   const [data, setdata]: any = useState({
@@ -22,7 +21,7 @@ function Package() {
     available_seat: "",
     description: "",
   });
-  
+
   const [table, settable]: any = useState([]);
   const [tableGgl, settableGgl]: any = useState(false);
 
@@ -40,10 +39,10 @@ function Package() {
     { TO: "to_location" },
     { "STATING  DATE": "strating_date" },
     { "ENDING TIME": "ending_date" },
-    {"TOTAL PRICE":"total_price"},
-    {"TOTAL SEATS":"total_seat"},
+    { "TOTAL PRICE": "total_price" },
+    { "TOTAL SEATS": "total_seat" },
     { DESTINATION: "destination" },
-    
+
     { ACTIONS: "" },
   ];
   useEffect(() => {
@@ -54,22 +53,21 @@ function Package() {
     if (met == "edit") {
       edit(data);
     } else {
-
       remove(data.key);
     }
   }
   function remove(id: any) {
-    if (window.confirm('Delete the item?')) {
-    console.log(id);
-    firebase
-      .database()
-      .ref("/package/" + id)
-      .remove()
-      .then(() => {
-        getdata();
-        toast.error("Delete!");
-      })
-      .catch(() => {});
+    if (window.confirm("Delete the item?")) {
+      console.log(id);
+      firebase
+        .database()
+        .ref("/package/" + id)
+        .remove()
+        .then(() => {
+          getdata();
+          toast.error("Delete!");
+        })
+        .catch(() => {});
     }
   }
   function edit(data: any) {
@@ -96,14 +94,13 @@ function Package() {
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
           console.log(arr);
-          
+
           ////console.log(arr);
         });
       })
       .catch((err) => {
         console.log(err);
       });
-      
   }
   function submit() {
     console.log("fdasd");
@@ -133,16 +130,14 @@ function Package() {
                 .catch((err) => {
                   console.log(err);
                 });
-            }).catch(err => {
-              console.log(err);
-
             })
-        }).catch((err: any) => {
-          console.log(err);
-
-
+            .catch((err) => {
+              console.log(err);
+            });
         })
-
+        .catch((err: any) => {
+          console.log(err);
+        });
     } else {
       console.log("fdasd");
 
@@ -169,15 +164,14 @@ function Package() {
                 .catch((err) => {
                   console.log(err);
                 });
-            }).catch(err => {
-              console.log(err);
-
             })
-        }).catch((err: any) => {
-          console.log(err);
-
-
+            .catch((err) => {
+              console.log(err);
+            });
         })
+        .catch((err: any) => {
+          console.log(err);
+        });
     }
   }
   function toggle() {
@@ -188,11 +182,12 @@ function Package() {
   return (
     <div className="container-fluid">
       <ToastContainer></ToastContainer>
-       <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
-      crossOrigin="anonymous" />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+        crossOrigin="anonymous"
+      />
       <button
         className={tableGgl ? "btn-danger btn" : "btn-success btn mb-3d"}
         onClick={toggle}
@@ -256,7 +251,7 @@ function Package() {
             </div>
             <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-              Strating Date
+                Strating Date
               </label>
               <input
                 onChange={(e) => setData(e)}
@@ -274,13 +269,13 @@ function Package() {
               <input
                 onChange={(e) => setData(e)}
                 name="endind_date"
-                value={data.ending_date }
+                value={data.ending_date}
                 type="date"
                 className="form-control"
                 placeholder="Ending_Date "
               />
             </div>
-           
+
             <div className="mt-2 col-md-12 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
                 Destination
@@ -300,7 +295,7 @@ function Package() {
               </label>
               <input
                 onChange={(e) => setfile(e)}
-                name="iamge"
+                name="img"
                 type="file"
                 className="form-control"
                 id="inputCity"
@@ -332,7 +327,7 @@ function Package() {
             </div>
             <div className="mt-2 col-md-6 mt-2 col-md-6">
               <label htmlFor="inputPassword4" className="form-label">
-              Package Details
+                Package Details
               </label>
               <input
                 value={data.details ? data.details : ""}
@@ -343,7 +338,7 @@ function Package() {
                 placeholder="Package Details"
               />
             </div>
-           
+
             <div className="mt-2 col-10 mt-2 col-md-12 text-center ">
               <label htmlFor="inputPassword4" className="form-label">
                 Discrpition
@@ -363,23 +358,21 @@ function Package() {
               type="submit"
               className="btn btn-primary  "
             >
-              
               {data.key ? "Update" : "Submit"}
             </button>
           </div>
         </div>
       ) : (
         <div>
-           {table.length ? (
+          {table.length ? (
             <Table
-              sendDataa={(met: any,key : any, data: any) =>
-                sendData(met, key,data )
+              sendDataa={(met: any, key: any, data: any) =>
+                sendData(met, key, data)
               }
               datasoure={table}
               coll={col}
             ></Table>
           ) : (
-            
             <div className="d-flex justify-content-center">
               <div className="spinner-border" role="status">
                 <span className="sr-only">Loading...</span>

@@ -45,8 +45,9 @@ function Flight() {
       remove(datas.key);
     }
   }
-
+  const [loding, setloding] = useState(true)
   function submit() {
+    setloding(false)
     console.log(data);
     if (!data.key) {
       firebase
@@ -65,19 +66,24 @@ function Flight() {
                 .ref("/flight")
                 .push(data)
                 .then((res) => {
+    setloding(true)
+
                   console.log(res);
-                  setTimeout(() => {
                     getdata();
-                  }, 2000);
                   settableGgl(false);
                   toast.success("Flight Add Success");
+
                 })
                 .catch((err) => {
                   toast.error(err.message);
+    setloding(true)
+
                 });
             })
             .catch((err) => {
               toast.error(err.message);
+    setloding(true)
+
             });
           // console.log(res);
           // toast.success("Flight Update successfully");
@@ -85,6 +91,8 @@ function Flight() {
         })
         .catch((err) => {
           toast.error(err.message);
+    setloding(true)
+
         });
     } else {
       if (file) {
@@ -106,9 +114,10 @@ function Flight() {
                   .update(data)
                   .then((res) => {
                     console.log(res);
-                    setTimeout(() => {
+    setloding(false)
+                    
                       getdata();
-                    }, 2000);
+
                     settableGgl(false);
                     toast.success("Flight Update Success");
                   })
@@ -118,12 +127,16 @@ function Flight() {
               })
               .catch((err) => {
                 toast.error(err.message);
+    setloding(true)
+
               });
             // console.log(res);
             // toast.success("Flight Update successfully");
             // settableGgl(false);
           })
           .catch((err) => {
+    setloding(true)
+
             toast.error(err.message);
           });
       } else {
@@ -133,14 +146,17 @@ function Flight() {
           .update(data)
           .then((res) => {
             console.log(res);
-            setTimeout(() => {
+          
               getdata();
-            }, 2000);
-            settableGgl(false);
+    setloding(false)
+            
+           
             toast.success("Flight Update Success");
           })
           .catch((err) => {
             toast.error(err.message);
+    setloding(true)
+
           });
       }
     }
@@ -524,9 +540,15 @@ function Flight() {
                 onClick={submit}
                 type="submit"
                 className="btn btn-primary  "
+                disabled={!loding}
               >
                 {data.key ? "Update" : "Submit"}
               </button>
+              { !loding?
+                <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>:""
+              }
             </div>
           </div>
         </div>
