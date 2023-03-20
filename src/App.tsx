@@ -11,6 +11,7 @@ import Bus from './component/Bus';
 import Login from "./auth/login";
 import Package from './component/package';
 import Offers from './component/offers';
+import Booking from './component/booking';
 
 export default function App() {
   
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="bus" element={<Bus />} />
             <Route path="package" element={<Package />} />
             <Route path="offers" element={<Offers />} />
+            <Route path="booking" element={<Booking />} />
 
           </Route>
           <Route path="login" element={<Login />} />
