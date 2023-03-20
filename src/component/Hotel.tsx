@@ -42,7 +42,7 @@ function Hotel() {
     { "TOTAL ROOMS": "total_rooms" },
     { ACTION: "" },
   ];
-  const [loding, setloding] = useState(true)
+  const [loding, setloding] = useState(false)
   function submit() {
     ////console.log(data);
     setloding(true);
@@ -65,25 +65,25 @@ function Hotel() {
                 .push(data)
                 .then((res) => {
                   ////console.log(res);
-    setloding(true);
+    setloding(false);
 
                   settableGgl(false);
                   getdata();
                 })
                 .catch((err) => {
                   console.log(err);
-    setloding(false);
+    setloding(true);
 
                 });
             }).catch(err => {
               console.log(err);
-    setloding(false);
+    setloding(true);
 
 
             })
         }).catch((err: any) => {
           console.log(err);
-    setloding(false);
+    setloding(true);
 
 
 
@@ -471,7 +471,7 @@ function Hotel() {
               >
                 {data.key ? "Update" : "Submit"}
               </button>
-              { !loding?
+              { loding?
                 <div className="spinner-border text-primary" role="status">
                 <span className="sr-only">Loading...</span>
               </div>:""
