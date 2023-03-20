@@ -21,6 +21,8 @@ function Sidebar(porps: any) {
           <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="bus">Bus</NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="package">Package</NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="offers">Offers</NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="booking">Booking</NavLink>
+
 
         </div>
       ) : ("")
