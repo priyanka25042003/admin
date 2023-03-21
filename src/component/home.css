@@ -1,0 +1,22 @@
+.opacity{
+    opacity: .75;
+}
+.reducs{
+    border-radius: 25px;
+}
+.shadows{
+    box-shadow: 0px 5px 25px 1px rgba(153, 152, 152, 0.83);
+}
+.shadowss{
+    transition: .6s;
+
+}
+.shadowss :hover{
+    transition: .6s;
+
+    box-shadow: 0px 5px 25px 1px rgba(77, 76, 76, 0.83);
+
+}
+.back-purpul{
+    background-color: #da8ee7;
+}

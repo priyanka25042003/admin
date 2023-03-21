@@ -12,6 +12,7 @@ import Login from "./auth/login";
 import Package from './component/package';
 import Offers from './component/offers';
 import Booking from './component/booking';
+import Feedback from './component/feedback';
 
 export default function App() {
   
@@ -28,6 +29,8 @@ export default function App() {
             <Route path="package" element={<Package />} />
             <Route path="offers" element={<Offers />} />
             <Route path="booking" element={<Booking />} />
+            <Route path="feedback" element={<Feedback />} />
+
 
           </Route>
           <Route path="login" element={<Login />} />
