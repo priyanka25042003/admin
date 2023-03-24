@@ -66,23 +66,23 @@ function Flight() {
                 .ref("/flight")
                 .push(data)
                 .then((res) => {
-    setloding(true)
+                  setloding(true)
 
                   console.log(res);
-                    getdata();
+                  getdata();
                   settableGgl(false);
                   toast.success("Flight Add Success");
 
                 })
                 .catch((err) => {
                   toast.error(err.message);
-    setloding(true)
+                  setloding(true)
 
                 });
             })
             .catch((err) => {
               toast.error(err.message);
-    setloding(true)
+              setloding(true)
 
             });
           // console.log(res);
@@ -91,7 +91,7 @@ function Flight() {
         })
         .catch((err) => {
           toast.error(err.message);
-    setloding(true)
+          setloding(true)
 
         });
     } else {
@@ -114,9 +114,9 @@ function Flight() {
                   .update(data)
                   .then((res) => {
                     console.log(res);
-    setloding(false)
-                    
-                      getdata();
+                    setloding(false)
+
+                    getdata();
 
                     settableGgl(false);
                     toast.success("Flight Update Success");
@@ -127,7 +127,7 @@ function Flight() {
               })
               .catch((err) => {
                 toast.error(err.message);
-    setloding(true)
+                setloding(true)
 
               });
             // console.log(res);
@@ -135,7 +135,7 @@ function Flight() {
             // settableGgl(false);
           })
           .catch((err) => {
-    setloding(true)
+            setloding(true)
 
             toast.error(err.message);
           });
@@ -146,16 +146,16 @@ function Flight() {
           .update(data)
           .then((res) => {
             console.log(res);
-          
-              getdata();
-    setloding(false)
-            
-           
+
+            getdata();
+            setloding(false)
+
+
             toast.success("Flight Update Success");
           })
           .catch((err) => {
             toast.error(err.message);
-    setloding(true)
+            setloding(true)
 
           });
       }
@@ -544,10 +544,10 @@ function Flight() {
               >
                 {data.key ? "Update" : "Submit"}
               </button>
-              { !loding?
+              {!loding ?
                 <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>:""
+                  <span className="sr-only">Loading...</span>
+                </div> : ""
               }
             </div>
           </div>
