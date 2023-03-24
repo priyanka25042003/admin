@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import Table from '../shared/table/table';
 
@@ -8,17 +8,20 @@ function Feedback() {
   const [tableGgl, settableGgl]: any = useState(false);
 
   let col: any[] = [
-    { IMAGE: "img" },
-    { NAME: "bus_name" },
-    { FROM: "from_location" },
-    { TO: "to_location" },
-    { "ARRIVAL DATE": "arrival_date" },
-    { "DEPARTURE TIME": "departure_time" },
-    {"TOTAL SEATS":"total_seat"},
-    { DESTINATION: "destination" },
+    { NAME: "name" },
+    { SUBJECT: "subject" },
+    { PHONE: "phone" },
+
+    { EMAIL: "email" },
+    { MESSAGE: "message" },
     
     { ACTIONS: "" },
   ];
+  useEffect(() => {
+    getdata()
+  
+  }, [])
+  
   function getdata() {
     let arr: any[] = [];
     firebase
