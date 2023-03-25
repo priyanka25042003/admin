@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
+// import logo from "../assert/logo1.png";
+
 
 
 function Navbar() {
@@ -43,7 +45,14 @@ function Navbar() {
         // </nav> */}
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <a className="navbar-brand" href="#">
-            Logo
+          {/* <img
+                              src={logo} style={{ height: "55px", width: "100px" }}
+
+                              className="img-fluid rounded-start m-3"
+                              alt="..."
+
+
+                            /> */}
           </a>
          
           <button className="d-block d-md-none" onClick={showsidebar} type="button">

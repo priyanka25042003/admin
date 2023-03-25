@@ -43,7 +43,7 @@ function Feedback() {
     console.log(id);
     firebase
       .database()
-      .ref("/bus/" + id)
+      .ref("/contectus/" + id)
       .remove()
       .then(() => {
         getdata();
