@@ -12,7 +12,7 @@ function Hotel() {
   const [table, settable]: any = useState([]);
   const [state, setsate]: any = useState([]);
   const [city, setcitys]: any = useState([]);
-  
+
 
   const [tableGgl, settableGgl]: any = useState(false);
   useEffect(() => {
@@ -66,69 +66,86 @@ function Hotel() {
                 .push(data)
                 .then((res) => {
                   ////console.log(res);
-    setloding(false);
+                  setloding(false);
 
                   settableGgl(false);
                   getdata();
                 })
                 .catch((err) => {
                   console.log(err);
-    setloding(true);
+                  setloding(true);
 
                 });
             }).catch(err => {
               console.log(err);
-    setloding(true);
+              setloding(true);
 
 
             })
         }).catch((err: any) => {
           console.log(err);
-    setloding(true);
+          setloding(true);
 
 
 
         })
 
-    } else {
+    } else  if (data.key && file){
       ////console.log("fdasd");
 
       firebase
-      .storage()
-      .ref("/flight/" + file.name)
-      .put(file)
-      .then((res: any) => {
-        firebase
-          .storage()
-          .ref("/flight/" + file.name)
-          .getDownloadURL()
+        .storage()
+        .ref("/flight/" + file.name)
+        .put(file)
+        .then((res: any) => {
+          firebase
+            .storage()
+            .ref("/flight/" + file.name)
+            .getDownloadURL()
+            .then((res) => {
+              data.img = res;
+              firebase
+                .database()
+                .ref("/hotel/" + data.key)
+                .update(data)
+                .then((res) => {
+                  ////console.log(res);
+                  settableGgl(false);
+                  getdata();
+                })
+                .catch((err) => {
+                  console.log(err);
+                  setloding(false);
+
+                });
+            }).catch(err => {
+              console.log(err);
+              setloding(false);
+
+            })
+        }).catch((err: any) => {
+          console.log(err);
+          setloding(false);
+
+
+        })
+    }else{
+      firebase
+          .database()
+          .ref("/hotel/" + data.key)
+          .update(data)
           .then((res) => {
-            data.img = res;
-            firebase
-              .database()
-              .ref("/hotel/"+data.key)
-              .update(data)
-              .then((res) => {
-                ////console.log(res);
-                settableGgl(false);
-                getdata();
-              })
-              .catch((err) => {
-                console.log(err);
-    setloding(false);
-
-              });
-          }).catch(err => {
-            console.log(err);
-            setloding(false);
-
+            console.log(res);
+            getdata();
+            setloding(false)
+            toggle()
+            toast.success("hotel Update Success");
           })
-      }).catch((err: any) => {
-        console.log(err);
-        setloding(false);
+          .catch((err) => {
+            toast.error(err.message);
+            setloding(true)
 
-
-      })
+          });
     }
   }
   function getdata() {
@@ -483,10 +500,10 @@ function Hotel() {
               >
                 {data.key ? "Update" : "Submit"}
               </button>
-              { loding?
+              {loding ?
                 <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>:""
+                  <span className="sr-only">Loading...</span>
+                </div> : ""
               }
             </div>
           </div>

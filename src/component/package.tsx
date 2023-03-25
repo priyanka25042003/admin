@@ -48,6 +48,7 @@ function Package() {
   useEffect(() => {
     getdata();
   }, []);
+  const [loding, setloding] = useState(false)
 
   function sendData(met: any, data: any, key: any) {
     if (met == "edit") {
@@ -67,7 +68,7 @@ function Package() {
           getdata();
           toast.error("Delete!");
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
   function edit(data: any) {
@@ -104,6 +105,7 @@ function Package() {
   }
   function submit() {
     console.log("fdasd");
+    setloding(true)
 
     if (!data.key && data.key == null) {
       ////console.log("runn");
@@ -124,21 +126,30 @@ function Package() {
                 .push(data)
                 .then((res) => {
                   ////console.log(res);
+                  setloding(false)
+
                   settableGgl(false);
                   getdata();
                 })
                 .catch((err) => {
                   console.log(err);
+                  setloding(false)
+
                 });
             })
             .catch((err) => {
               console.log(err);
+              setloding(false)
+
             });
         })
+
         .catch((err: any) => {
           console.log(err);
+          setloding(false)
+
         });
-    } else {
+    } else if (file && data.key) {
       console.log("fdasd");
 
       firebase
@@ -160,17 +171,44 @@ function Package() {
                   ////console.log(res);
                   settableGgl(false);
                   getdata();
+                  setloding(false)
+
                 })
                 .catch((err) => {
                   console.log(err);
+                  setloding(false)
+
                 });
             })
             .catch((err) => {
               console.log(err);
+              setloding(false)
+
             });
         })
         .catch((err: any) => {
           console.log(err);
+          setloding(false)
+
+        });
+    } else {
+      setloding(true)
+
+      firebase
+        .database()
+        .ref("/package/" + data.key)
+        .update(data)
+        .then((res) => {
+          console.log(res);
+          getdata();
+          setloding(false)
+          toggle()
+          toast.success("hotel Update Success");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+          setloding(false)
+
         });
     }
   }
@@ -357,9 +395,16 @@ function Package() {
               onClick={submit}
               type="submit"
               className="btn btn-primary  "
+              disabled={loding}
+
             >
               {data.key ? "Update" : "Submit"}
             </button>
+            {loding ?
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div> : ""
+            }
           </div>
         </div>
       ) : (
