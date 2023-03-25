@@ -30,7 +30,8 @@ function Navbar() {
       //         <Link to='/hotel'><li>Hotel</li></Link>
       //         <Link to='/bus'><li>Bus</li></Link>
       //     </ul>
-      // </nav>
+      // </nav>    data.pyment = amount
+
       <>
         {/* // <nav className='navbar'>
         //     <ul className="nav-links">

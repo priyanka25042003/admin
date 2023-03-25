@@ -9,12 +9,9 @@ function Feedback() {
 
   let col: any[] = [
     { NAME: "name" },
-    { SUBJECT: "subject" },
     { PHONE: "phone" },
-
     { EMAIL: "email" },
     { MESSAGE: "message" },
-    
     { ACTIONS: "" },
   ];
   useEffect(() => {
@@ -26,18 +23,15 @@ function Feedback() {
     let arr: any[] = [];
     firebase
       .database()
-      .ref("/feedback")
+      .ref("/contectus")
       .get()
       .then((res) => {
-        console.log(res);
         res.forEach((element) => {
           // ////console.log( element.forEach(c => ()));
           arr.push({ key: element.key, ...element.val() });
           settable(arr);
-          console.log(arr);
-
-          ////console.log(arr);
         });
+        console.log("####3333",arr);
       })
       .catch((err) => {
         console.log(err);
