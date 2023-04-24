@@ -13,9 +13,12 @@ function Home() {
     const [bus, setbus]: any = useState()
     const [booking, setbooking]: any = useState()
     const [packages, setpackages]: any = useState()
+    const [reven, setrevenyu]: any = useState(0)
+    const [cancle, setcancle]: any = useState(0)
+
     const [lastbook, lastbooking]: any = useState([])
     const [feedback, setfeedback]: any = useState([])
-
+    
 
     useEffect(() => {
         getflight();
@@ -130,7 +133,27 @@ function Home() {
                     setbooking(arr.length)
                     lastbooking(arr)
                     console.log(arr);
+                    
                 });
+                let revenue =0
+                let can =0
+
+                arr.forEach((e)=>{
+                    revenue =  revenue +e.pyment
+                    if (e.cancel) {
+                        can ++
+                    }
+                    else{
+                        revenue= revenue - e.pyment
+                        
+                    }
+                    setcancle(can)
+                    setrevenyu(revenue)
+                    console.log(can, revenue);
+                    
+                })
+                console.log(cancle,reven);
+
             })
             .catch((err) => {
                 // console.log(err);
@@ -194,7 +217,7 @@ function Home() {
                                         <i className="fa fa-inr fa-5x opacity"></i>
                                         <h6 className="text-uppercase">Total Revenue</h6>
                                     </div>
-                                    <h1 className="display-6 opacity">125</h1>
+                                    <h1 className="display-6 opacity">{reven}</h1>
                                 </div>
                             </div>
                         </div>
@@ -205,7 +228,7 @@ function Home() {
                                         <i className="fa fa-times fa-5x opacity"></i>
                                         <h6 className="text-uppercase">Canceled Booking</h6>
                                     </div>
-                                    <h1 className="display-6 opacity">36</h1>
+                                    <h1 className="display-6 opacity">{cancle}</h1>
                                 </div>
                             </div>
                         </div>
@@ -267,13 +290,13 @@ function Home() {
                             <div className="card" style={{ width: "18rem;" }}>
                                 <div className="card-body">
                                     <h5 className="card-title">Latest Booking</h5>
-                                    <table className="table">
+                                    <table className="table" style={{ width: "18rem;" }}>
                                         <thead className="thead-light">
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Destination</th>
-                                                <th scope="col">Last</th>
-                                                <th scope="col">Handle</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Boking type</th>
+                                                <th scope="col">payment Id</th>
                                             </tr>
                                         </thead>
                                         <tbody>{
@@ -282,7 +305,7 @@ function Home() {
                                                     return (<tr>
                                                         <th scope="row">{index + 1}</th>
                                                         <td>{res.name}</td>
-                                                        <td>{res.hotel_name ? "Hotel" : ""}{res.flight_name ? "Flight" : ""}{res.bus_name ? "Flight" : ""}{res.pakage ? "Flight" : ""}</td>
+                                                        <td>{res.hotel_name ? "Hotel" : ""}{res.flight_name ? "Flight" : ""}{res.bus_name ? "Bus" : ""}{res.pakage ? "Package" : ""}</td>
                                                         <td>{res.paymentid}</td>
                                                     </tr>)
                                                 }
