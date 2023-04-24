@@ -135,18 +135,19 @@ function Home() {
                     console.log(arr);
                     
                 });
-                let revenue =0
-                let can =0
-
+                let revenue = 0
+                let can = 0
                 arr.forEach((e)=>{
-                    revenue =  revenue +e.pyment
-                    if (e.cancel) {
+                    console.log(e.pyment,e.cancel != undefined);
+                    
+                   
+                    if (e.cancel != undefined) {
                         can ++
                     }
-                    else{
-                        revenue= revenue - e.pyment
-                        
+                    if (e.cancel == undefined) {
+                        revenue =  revenue + e.pyment
                     }
+                   
                     setcancle(can)
                     setrevenyu(revenue)
                     console.log(can, revenue);
@@ -195,7 +196,7 @@ function Home() {
                                         <h6 className="text-uppercase">Users</h6>
 
                                     </div>
-                                    <h1 className="display-6 opacity">134</h1>
+                                    <h1 className="display-6 opacity">13</h1>
                                 </div>
                             </div>
                         </div>
@@ -275,7 +276,7 @@ function Home() {
                             <div className="card  text-white h-80 shadowss  reducs">
                                 <div className="card-body  justify-content-between reducs align-items-center d-flex" style={{ backgroundColor: "#ff8b3d" }}>
                                     <div className="rotate p-3">
-                                        <i className="fa fa-bus fa-5x opacity"></i>
+                                        <i className="fa fa-ticket fa-5x opacity"></i>
                                         <h6 className="text-uppercase">Package</h6>
 
                                     </div>
